@@ -1,0 +1,11 @@
+libsvm
+matplotlib
+pytorch
+seaborn
+sklearn
+tqdm
+numpy
+opencv-python
+opencv-python-headless
+pandas
+pathlib
