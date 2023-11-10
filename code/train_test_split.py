@@ -44,4 +44,4 @@ def split_dataset(base_dir, output_dir, train_ratio=0.7, num_object=50):
 if __name__ == "__main__":
     base_dir = '../data/PIE/'
     output_dir = '../data/'
-    split_dataset(base_dir=base_dir, output_dir=output_dir, train_ratio=0.7, num_object=50)
+    split_dataset(base_dir=base_dir, output_dir=output_dir, train_ratio=0.7, num_object=25)
