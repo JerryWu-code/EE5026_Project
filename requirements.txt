@@ -9,3 +9,4 @@ opencv-python
 opencv-python-headless
 pandas
 pathlib
+pillow~=9.5.0

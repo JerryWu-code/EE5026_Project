@@ -27,14 +27,14 @@ def split_dataset(base_dir, output_dir, train_ratio=0.7, num_object=50):
             src_path = os.path.join(folder_path, image)
 
             # set the file name
-            new_image_name = "{}".format(image)
+            # new_image_name = "{}".format(image)
             os.makedirs(os.path.join(train_dir, folder), exist_ok=True)
             os.makedirs(os.path.join(test_dir, folder), exist_ok=True)
 
             if i < split_index:
-                dst_path = os.path.join(train_dir, folder, new_image_name)
+                dst_path = os.path.join(train_dir, folder, image)
             else:
-                dst_path = os.path.join(test_dir, folder, new_image_name)
+                dst_path = os.path.join(test_dir, folder, image)
 
             # output the image
             with open(src_path, 'rb') as src_file:
