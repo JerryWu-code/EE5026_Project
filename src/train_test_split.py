@@ -1,5 +1,6 @@
 import os
 import random
+from config import *
 
 def split_dataset(base_dir, output_dir, train_ratio=0.7, num_object=50):
     folders = os.listdir(base_dir)
@@ -42,6 +43,6 @@ def split_dataset(base_dir, output_dir, train_ratio=0.7, num_object=50):
                     dst_file.write(src_file.read())
 
 if __name__ == "__main__":
-    base_dir = '../data/PIE/'
-    output_dir = '../data/'
-    split_dataset(base_dir=base_dir, output_dir=output_dir, train_ratio=0.7, num_object=25)
+    base_dir = PIE_dir
+    output_dir = data_dir
+    split_dataset(base_dir=base_dir, output_dir=output_dir, train_ratio=train_ratio, num_object=num_object)
