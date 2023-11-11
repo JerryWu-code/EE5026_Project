@@ -76,6 +76,5 @@ if __name__ == '__main__':
     image_dir = train_dir
     train, labels, label_mapping = image_to_mat(image_dir=image_dir, target_num=500, use_selfie=True, output_map=True,
                                                 map_name='PCA_train_map.txt')
-    print(train)
-    print(labels)
-    print(Counter(labels))
+    # print(train)
+    # print(labels)
