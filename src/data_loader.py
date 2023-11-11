@@ -74,7 +74,8 @@ def image_to_mat(image_dir, target_num=None, use_selfie=True, output_map=False, 
 
 if __name__ == '__main__':
     image_dir = train_dir
-    train, labels, label_mapping = image_to_mat(image_dir=image_dir, target_num=500, use_selfie=True, output_map=True,
+    train_image, new_labels, label_mapping = image_to_mat(image_dir=image_dir, target_num=500, use_selfie=True, output_map=True,
                                                 map_name='PCA_train_map.txt')
-    # print(train)
-    # print(labels)
+    # print(train_image)
+    # print(new_labels)
+    print(train_image[0], train_image[0].shape, type(train_image[0]))
