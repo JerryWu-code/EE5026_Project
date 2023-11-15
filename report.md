@@ -31,6 +31,14 @@ Abstract
 
 #### 1.2   Data Distribution Visualization
 
+#####  1.2.1   Visualize the projected data vector in 2d and 3d plots
+
+
+
+##### 1.2.2
+
+
+
 
 
 #### 1.3   Combine KNN Classification Results
