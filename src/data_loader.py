@@ -1,9 +1,8 @@
 import os
 from PIL import Image
 import numpy as np
-from config import image_format, train_dir, test_dir, seed
-import random
 from config import *
+import random
 from collections import Counter
 import pprint
 
@@ -87,17 +86,43 @@ def image_to_mat(image_dir, target_num=None, use_selfie=True, output_map=False, 
 
     return images, np.array(labels), label_mapping
 
+def get_dataset(train_num=train_target_num):
+    """
+    Get the dataset and label mapping
+    :param train_num: number of training images
+    :return: for X, observations by features
+             for y, observations vector
+    """
+    image_dir1 = train_dir
+    image_dir2 = test_dir
+
+    # Train
+    train_image, train_new_labels, train_label_mapping = image_to_mat(image_dir=image_dir1, target_num=train_num,
+                                                                      use_selfie=True,
+                                                                      seed=seed)
+    train_image_mat = np.array([np.ravel(i) for i in train_image])  # 500 * 1024
+    # Test
+    test_image, test_new_labels, test_label_mapping = image_to_mat(image_dir=image_dir2, use_selfie=True, seed=seed)
+    test_image_mat = np.array([np.ravel(i) for i in test_image])   # 1303 * 1024
+
+    X_train = train_image_mat
+    y_train = train_new_labels
+    X_test = test_image_mat
+    y_test = test_new_labels
+
+    return X_train, y_train, X_test, y_test
 
 if __name__ == '__main__':
     image_dir1 = train_dir
     image_dir2 = test_dir
-    train_image, train_new_labels, train_label_mapping = image_to_mat(image_dir=image_dir1, target_num=500,
+    save = False
+    train_image, train_new_labels, train_label_mapping = image_to_mat(image_dir=image_dir1, target_num=train_target_num,
                                                                       use_selfie=True,
-                                                                      output_map=True,
+                                                                      output_map=save,
                                                                       file=PCA_train_dir, seed=seed)
     test_image, test_new_labels, test_label_mapping = image_to_mat(image_dir=image_dir2, use_selfie=True,
-                                                                   output_map=True,
+                                                                   output_map=save,
                                                                    file=PCA_test_dir, seed=seed)
     # print(train_image)
     # print(new_labels)
-    print(train_image[0], train_image[0].shape, type(train_image[0]))
+    get_dataset()

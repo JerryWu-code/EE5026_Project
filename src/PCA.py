@@ -39,7 +39,7 @@ if __name__ == '__main__':
     # 1. Get data
     #   1.1 train set
     #       get the list of 500 samples matrix of training set images
-    train_image, train_new_labels, train_label_mapping = image_to_mat(image_dir=image_dir1, target_num=500,
+    train_image, train_new_labels, _ = image_to_mat(image_dir=image_dir1, target_num=500,
                                                                       use_selfie=True,
                                                                       seed=seed)
     #       transform the train_image (500 by 32*32) to image_mat (1024 by 500)
@@ -47,7 +47,7 @@ if __name__ == '__main__':
 
     #   1.2 test set
     #       get the list of all 1303 samples matrix of testing set images
-    test_image, test_new_labels, test_label_mapping = image_to_mat(image_dir=image_dir2, use_selfie=True, seed=seed)
+    test_image, test_new_labels, _ = image_to_mat(image_dir=image_dir2, use_selfie=True, seed=seed)
     #       transform the test_image (1303 by 32*32) to image_mat (1024 by 1303)
     test_image_mat = np.array([np.ravel(i) for i in test_image]).T
 
@@ -80,16 +80,18 @@ if __name__ == '__main__':
         for d in dimension_list:
             train_reduced, reconstruct_faces, _, trans_mat = PCA(image_mat=train_image_mat, num_PCs=d,
                                                                  write_result=save, file_name=PCA_train_dir)
-            X_train = train_reduced.T[group]
-            X_test = (np.dot(test_image_mat.T - np.mean(test_image_mat.T, axis=0), trans_mat))[group]
+            X_train_pca = train_reduced.T[group]
+            X_test_pca = (np.dot(test_image_mat.T - np.mean(test_image_mat.T, axis=0), trans_mat))[group]
 
-            predicted_classes, accuracy = knn_classifier(X_train, y_train, X_test, k, y_test)
+            predicted_classes, accuracy = knn_classifier(X_train_pca, y_train, X_test_pca, k, y_test)
             accuracy_list.append(accuracy)
             if i == 0:
                 example_face.append(reconstruct_faces[:, example_indice].reshape(32, 32))
 
     accu = np.array(accuracy_list).reshape(2, -1)
     # show reconstructed face of my selfie
+
+    # 5. Draw the Reconstruction Faces and Accuracy Curve
     draw_faces(faces_mat=np.array(example_face), sub_width=4, save_fig=save,
                title_lst=['Selfie', 'D={}'.format(dimension_list[0]), 'D={}'.format(dimension_list[0]),
                           'D={}'.format(dimension_list[0])],

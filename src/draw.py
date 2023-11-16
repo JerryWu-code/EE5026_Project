@@ -121,6 +121,7 @@ def draw_ProjectedData(reduced_2d, reduced_3d, new_labels, selfie_label=25, save
     if save_fig:
         fig.savefig(output_fig_dir + 'Projection of {0}.png'.format(name))
 
+
 def draw_accuracy_curve(x, accu_mat: np.array, save_fig=False, file_name=None):
     """
     Plot the accuraty graph based on the given data.
@@ -136,8 +137,8 @@ def draw_accuracy_curve(x, accu_mat: np.array, save_fig=False, file_name=None):
     ax.legend(loc='best')
     ax.set_title('{} Accuracy Curve in Testing Set'.format(file_name))
     for i, (xi, yi1, yi2) in enumerate(zip(x, 100 * accu_mat[1, :], 100 * accu_mat[0, :])):
-        ax.text(xi, yi1-3.5, '{:.2f}%'.format(yi1), ha='center', va='bottom', color='cornflowerblue')
-        ax.text(xi, yi2+2, '{:.2f}%'.format(yi2), ha='center', va='top', color='r')
+        ax.text(xi, yi1-5, '{:.2f}%'.format(yi1), ha='center', va='bottom', color='cornflowerblue')  # -3.5
+        ax.text(xi, yi2+2, '{:.2f}%'.format(yi2), ha='center', va='top', color='r')  # +2
     plt.show()
     if save_fig:
         fig.savefig(output_fig_dir + '{0}: Accuracy_Curve.png'.format(file_name))
@@ -146,7 +147,8 @@ def draw_accuracy_curve(x, accu_mat: np.array, save_fig=False, file_name=None):
 if __name__ == "__main__":
     image_dir = train_dir
 
-    train_image, new_labels, label_mapping = image_to_mat(image_dir=image_dir, target_num=500, use_selfie=True)
+    train_image, new_labels, label_mapping = image_to_mat(image_dir=image_dir, target_num=train_target_num,
+                                                          use_selfie=True)
     # draw_mean_face(train_image)
 
     selfie_indices = np.where(np.array(new_labels) == 25)[0]

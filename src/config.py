@@ -2,18 +2,24 @@
 train_ratio = 0.7
 # set the target number of objectives
 num_object = 25
+# define image format we may use
+image_format = tuple(('.png', '.jpg', '.jpeg'))
+
+##########
+
+# PCA & LDA Settings:
+PCA_dimension_list = [40, 80, 200]
+LDA_dimension_list = [2, 3, 9]
+# select which selfie you want to reconstruct
+case_selfie_num = 7
 # set the random seed
 seed = 5026
 # set the selfie label, could find in data/PCA_train_map.txt
 selfie_label = 25
+# set training set size
+train_target_num = 500
 
-# PCA
-PCA_dimension_list = [40, 80, 200]
-# select which selfie you want to reconstruct
-case_selfie_num = 7
-
-# define image format we may use
-image_format = tuple(('.png', '.jpg', '.jpeg'))
+##########
 
 # set directory
 data_dir = '../data'

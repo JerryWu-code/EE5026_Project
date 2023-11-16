@@ -1,8 +1,6 @@
 import numpy as np
 from data_loader import image_to_mat
 from config import *
-from sklearn.decomposition import PCA
-from sklearn.neighbors import KNeighborsClassifier
 
 def knn_classifier(X_train, y_train, X_test, k, y_test=None):
     """
@@ -89,14 +87,7 @@ if __name__ == "__main__":
     X_test = test_image_mat
     y_test = test_new_labels
     k = 3
-    # predicted_classes, accuracy = knn_classifier(X_train, y_train, X_test, k, y_test)
-
-    n_components = 20
-    pca = PCA(n_components=n_components)
-
-    X_train_pca = pca.fit_transform(X_train)
-    X_test_pca = pca.transform(X_test)
-    predicted_classes, accuracy = knn_classifier(X_train_pca, y_train, X_test_pca, k, y_test)
+    predicted_classes, accuracy = knn_classifier(X_train, y_train, X_test, k, y_test)
 
     print("Predicted Classes:", predicted_classes)
     print("Accuracy:", accuracy)
