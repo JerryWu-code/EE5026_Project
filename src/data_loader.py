@@ -1,17 +1,31 @@
 import os
 from PIL import Image
 import numpy as np
-from config import image_format, train_dir, test_dir
+from config import image_format, train_dir, test_dir, seed
 import random
 from collections import Counter
 import pprint
 
 
-def image_to_mat(image_dir, target_num=None, use_selfie=True, output_map=False, map_name=None):
+def image_to_mat(image_dir, target_num=None, use_selfie=True, output_map=False, map_name=None, seed=seed):
+    """
+    Convert images to a matrix
+    :param image_dir: Directory containing the images
+    :param target_num: Number of target images (optional)
+    :param use_selfie: Whether to include selfies (optional)
+    :param output_map: Whether to output a label mapping file (optional)
+    :param map_name: Name of the label mapping file (optional)
+    :param seed: Seed for randomization (optional)
+
+    :return: Images: list of images, each image 32*32
+             labels: list of labels for images
+             label mapping: dict of old_to_new label mapping
+    """
     # Initialize the list for images and labels
     images = []
     labels = []
 
+    random.seed(seed)
     # reset the label-mappling in order, and the last one is selfie
     object_list = os.listdir(image_dir)
     if '.DS_Store' in object_list:
@@ -43,6 +57,7 @@ def image_to_mat(image_dir, target_num=None, use_selfie=True, output_map=False, 
             if folder_name == 'selfie':
                 final_image_lst = image_lst
             elif folder_name == object_list[-1]:
+                random.seed(seed)
                 final_image_lst = random.sample(image_lst, target_num - average_class_num * (len(object_list) - 2))
             else:
                 final_image_lst = random.sample(image_lst, average_class_num)
@@ -77,7 +92,7 @@ if __name__ == '__main__':
     image_dir = train_dir
     train_image, new_labels, label_mapping = image_to_mat(image_dir=image_dir, target_num=500, use_selfie=True,
                                                           output_map=True,
-                                                          map_name='PCA_train_map.txt')
+                                                          map_name='PCA_train_map.txt', seed=seed)
     # print(train_image)
     # print(new_labels)
     print(train_image[0], train_image[0].shape, type(train_image[0]))

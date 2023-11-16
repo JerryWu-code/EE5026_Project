@@ -28,7 +28,7 @@ def draw_faces(faces_mat, sub_width=None, save_fig=False, name=None):
         if i + 1 <= faces_mat.shape[0]:
             axi.imshow(faces_mat[i], cmap='gray')
             axi.axis('off')
-            axi.set_title(i+1)
+            axi.set_title(i + 1)
         else:
             axi.set_visible(False)
 
@@ -79,6 +79,42 @@ def draw_PCs_faces(reduced_eigen_faces, save_fig=False):
         plt.show()
         if save_fig:
             fig.savefig(output_fig_dir + '{0}.png'.format(name))
+
+
+def draw_ProjectedData(reduced_2d, reduced_3d, new_labels, selfie_label=25, save_fig=False, name=None):
+    """
+    Plot the projected data onto 2D and 3D scatter plots respectively.
+    """
+    selfie_indices = np.where(np.array(new_labels) == selfie_label)[0]
+    cmupie_indices = np.where(np.array(new_labels) != selfie_label)[0]
+    proj_PIE_2d = np.array(reduced_2d)[:, cmupie_indices]
+    proj_ME_2d = np.array(reduced_2d)[:, selfie_indices]
+    proj_PIE_3d = np.array(reduced_3d)[:, cmupie_indices]
+    proj_ME_3d = np.array(reduced_3d)[:, selfie_indices]
+
+    plt.style.use('seaborn-whitegrid')
+    fig = plt.figure(figsize=plt.figaspect(0.5))
+    # 2D Plot
+    ax = fig.add_subplot(1, 2, 1)
+    ax.scatter(proj_PIE_2d[0, :], proj_PIE_2d[1, :], s=10, c='cornflowerblue', label='CMU PIE')
+    ax.scatter(proj_ME_2d[0, :], proj_ME_2d[1, :], s=15, c='r', label='Selfie')
+    ax.set_xlabel('Principle Component 1')
+    ax.set_ylabel('Principle Component 2')
+    ax.set_title('2D Projection')
+    ax.legend()
+    # 3D Plot
+    ax = fig.add_subplot(1, 2, 2, projection='3d')
+    ax.scatter(proj_PIE_3d[0, :], proj_PIE_3d[1, :], proj_PIE_3d[2, :], s=10, c='cornflowerblue', label='CMU PIE')
+    ax.scatter(proj_ME_3d[0, :], proj_ME_3d[1, :], proj_ME_3d[2, :], s=15, c='r', label='Selfie')
+    ax.set_xlabel('Principle Component 1')
+    ax.set_ylabel('Principle Component 2')
+    ax.set_zlabel('Principle Component 3')
+    ax.set_title('3D Projection')
+    # ax.view_init(azim=200, elev=30)
+    ax.legend()
+    plt.show()
+    if save_fig:
+        fig.savefig(output_fig_dir + 'Projection of {0}.png'.format(name))
 
 
 if __name__ == "__main__":

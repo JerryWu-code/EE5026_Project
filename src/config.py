@@ -2,6 +2,8 @@
 train_ratio = 0.7
 # set the target number of objectives
 num_object = 25
+# set the random seed
+seed = 5026
 
 # define image format we may use
 image_format = tuple(('.png', '.jpg', '.jpeg'))

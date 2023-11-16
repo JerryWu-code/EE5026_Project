@@ -1,13 +1,13 @@
 import numpy as np
-from config import image_format, train_dir, test_dir, output_fig_dir
+from config import image_format, train_dir, test_dir, output_fig_dir, seed
 from data_loader import image_to_mat
 import random
 import matplotlib.pyplot as plt
-from draw_face import draw_PCs_faces
+from draw import draw_PCs_faces, draw_ProjectedData
 
 
 def PCA(image_mat, num_PCs=3, method='normal'):
-    mean_mat = np.mean(image_mat, axis=0)
+    mean_mat = np.mean(image_mat, axis=1).reshape(-1, 1)
     centered_mat = image_mat - mean_mat
 
     if method == 'normal':
@@ -38,12 +38,12 @@ def PCA(image_mat, num_PCs=3, method='normal'):
     print("After PCA with {0} PCs, the information rate is {1:.2f}%.".format(num_PCs, 100 * information_rate))
 
     # get the reduced eigen faces within num_PCs, eg: 1024 by 3
-    reduced_eigen_faces = eigen_faces[:, :num_PCs]
+    reduced_eigen_faces = eigen_faces[:, :num_PCs] + mean_mat
 
     # project faces from original face-space to num_PCs-space
-    reduced_mat = reduced_eigen_faces.T.dot(centered_mat) + mean_mat
+    proj_mat = reduced_eigen_faces.T.dot(centered_mat)  # 3 by 500
 
-    return reduced_mat, reduced_eigen_faces, information_rate
+    return proj_mat, reduced_eigen_faces, information_rate
 
 
 if __name__ == '__main__':
@@ -51,11 +51,17 @@ if __name__ == '__main__':
     image_dir = train_dir
 
     # get the list of 500 samples matrix of training set images
-    train_image, new_labels, label_mapping = image_to_mat(image_dir=image_dir, target_num=500, use_selfie=True)
+    train_image, new_labels, label_mapping = image_to_mat(image_dir=image_dir, target_num=500, use_selfie=True,
+                                                          seed=seed)
     # transform the train_image (500 by 32*32) to image_mat (1024 by 500)
     image_mat = np.array([np.ravel(i) for i in train_image]).T
 
     # implement PCA
-    reduced_mat, reduced_eigen_faces, information_rate = PCA(image_mat=image_mat, num_PCs=3, method='normal')
+    reduced_2d, reduced_eigen_faces_2d, _ = PCA(image_mat=image_mat, num_PCs=2, method='normal')
+    reduced_3d, reduced_eigen_faces_3d, _ = PCA(image_mat=image_mat, num_PCs=3, method='normal')
+
     # draw and save the eigen faces
-    draw_PCs_faces(reduced_eigen_faces=reduced_eigen_faces, save_fig=False)
+    # draw_PCs_faces(reduced_eigen_faces=reduced_eigen_faces_2d, save_fig=False)
+    # draw_PCs_faces(reduced_eigen_faces=reduced_eigen_faces_3d, save_fig=False)
+
+    draw_ProjectedData(reduced_2d, reduced_3d, new_labels=new_labels, selfie_label=25, save_fig=False, name='PCA')
