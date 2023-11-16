@@ -7,6 +7,11 @@ seed = 5026
 # set the selfie label, could find in data/PCA_train_map.txt
 selfie_label = 25
 
+# PCA
+PCA_dimension_list = [40, 80, 200]
+# select which selfie you want to reconstruct
+case_selfie_num = 7
+
 # define image format we may use
 image_format = tuple(('.png', '.jpg', '.jpeg'))
 

@@ -5,10 +5,11 @@ import math
 from config import image_format, train_dir, test_dir, output_fig_dir
 
 
-def draw_faces(faces_mat, sub_width=None, save_fig=False, name=None):
+def draw_faces(faces_mat, sub_width=None, save_fig=False, title_lst=None, file_name=None):
     """
     Draw the faces of the dataset.
-    :param name: filename of the output figure.
+    :param title_lst: title list of the subplots.
+    :param file_name: filename of the output figure.
     :param sub_width: fig subplot width, number of cols.
     :param save_fig: whether save the face file.
     :param faces_mat: 2D array of images, number * 32 * 32.
@@ -28,13 +29,16 @@ def draw_faces(faces_mat, sub_width=None, save_fig=False, name=None):
         if i + 1 <= faces_mat.shape[0]:
             axi.imshow(faces_mat[i], cmap='gray')
             axi.axis('off')
-            axi.set_title(i + 1)
+            if not title_lst:
+                axi.set_title(i + 1)
+            else:
+                axi.set_title(title_lst[i])
         else:
             axi.set_visible(False)
 
     plt.show()
     if save_fig:
-        fig.savefig(output_fig_dir + '{0}Faces.png'.format(name + ': '))
+        fig.savefig(output_fig_dir + '{0}Faces.png'.format(file_name + ': '))
     return fig
 
 
@@ -117,6 +121,27 @@ def draw_ProjectedData(reduced_2d, reduced_3d, new_labels, selfie_label=25, save
     if save_fig:
         fig.savefig(output_fig_dir + 'Projection of {0}.png'.format(name))
 
+def draw_accuracy_curve(x, accu_mat: np.array, save_fig=False, file_name=None):
+    """
+    Plot the accuraty graph based on the given data.
+    :param:
+    accu_mat: row 1~Selfie, row 2~CMU PIE
+    save_fig: whether save this
+    """
+    fig, ax = plt.subplots()
+    ax.plot(x, 100 * accu_mat[1, :], marker='o', color='cornflowerblue', label='CMU PIE', linestyle='-')
+    ax.plot(x, 100 * accu_mat[0, :], marker='*', color='r', label='Selfie', linestyle=':')
+    ax.set_xlabel('Image Dimensions')
+    ax.set_ylabel('Classification Accuracy (%)')
+    ax.legend(loc='best')
+    ax.set_title('{} Accuracy Curve in Testing Set'.format(file_name))
+    for i, (xi, yi1, yi2) in enumerate(zip(x, 100 * accu_mat[1, :], 100 * accu_mat[0, :])):
+        ax.text(xi, yi1-3.5, '{:.2f}%'.format(yi1), ha='center', va='bottom', color='cornflowerblue')
+        ax.text(xi, yi2+2, '{:.2f}%'.format(yi2), ha='center', va='top', color='r')
+    plt.show()
+    if save_fig:
+        fig.savefig(output_fig_dir + '{0}: Accuracy_Curve.png'.format(file_name))
+
 
 if __name__ == "__main__":
     image_dir = train_dir
@@ -125,4 +150,5 @@ if __name__ == "__main__":
     # draw_mean_face(train_image)
 
     selfie_indices = np.where(np.array(new_labels) == 25)[0]
-    draw_faces(faces_mat=np.array(train_image)[selfie_indices], sub_width=4, save_fig=False, name=None)
+    draw_faces(faces_mat=np.array(train_image)[selfie_indices], sub_width=4, save_fig=True,
+               file_name='My_Selfie')

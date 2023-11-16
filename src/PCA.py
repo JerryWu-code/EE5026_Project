@@ -3,7 +3,7 @@ from config import *
 from data_loader import image_to_mat
 import random
 import matplotlib.pyplot as plt
-from draw import draw_PCs_faces, draw_ProjectedData
+from draw import *
 from KNN import knn_classifier
 
 
@@ -65,22 +65,33 @@ if __name__ == '__main__':
 
     # 4. Use PCA reduce dimensionality to 40, 80, 200 respectively
     k = 3
-    dimension_list = [40, 80, 200]
-    accuracy_list = []
-
+    dimension_list = PCA_dimension_list
     selfie_indices = np.where(train_new_labels == selfie_label)[0]
     cmupie_indices = np.where(train_new_labels != selfie_label)[0]
+    example_indice = selfie_indices[case_selfie_num - 1]
 
-    for group in [selfie_indices, cmupie_indices]:
+    accuracy_list = []
+    example_face = [train_image_mat[:, example_indice].reshape(32, 32)]
+
+    for i in range(2):
+        group = [selfie_indices, cmupie_indices][i]
         y_train = train_new_labels[group]
         y_test = test_new_labels[group]
         for d in dimension_list:
-            train_reduced, _, _, trans_mat = PCA(image_mat=train_image_mat, num_PCs=d,
-                                                 write_result=save, file_name=PCA_train_dir)
+            train_reduced, reconstruct_faces, _, trans_mat = PCA(image_mat=train_image_mat, num_PCs=d,
+                                                                 write_result=save, file_name=PCA_train_dir)
             X_train = train_reduced.T[group]
             X_test = (np.dot(test_image_mat.T - np.mean(test_image_mat.T, axis=0), trans_mat))[group]
 
             predicted_classes, accuracy = knn_classifier(X_train, y_train, X_test, k, y_test)
             accuracy_list.append(accuracy)
+            if i == 0:
+                example_face.append(reconstruct_faces[:, example_indice].reshape(32, 32))
 
-    print('Accuracy list:', accuracy_list)
+    accu = np.array(accuracy_list).reshape(2, -1)
+    # show reconstructed face of my selfie
+    draw_faces(faces_mat=np.array(example_face), sub_width=4, save_fig=save,
+               title_lst=['Selfie', 'D={}'.format(dimension_list[0]), 'D={}'.format(dimension_list[0]),
+                          'D={}'.format(dimension_list[0])],
+               file_name='PCA_Reconstru_selfie_{}'.format(case_selfie_num))
+    draw_accuracy_curve(x=dimension_list, accu_mat=accu, save_fig=True, file_name='PCA & KNN')
