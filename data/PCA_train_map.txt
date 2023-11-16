@@ -28,3 +28,8 @@ Name: PCA_train_map.txt
  'selfie': {'label': 25, 'num': 7}}
 
 Total number: 500
+After PCA with 2 PCs, the information rate is 67.00%.
+After PCA with 3 PCs, the information rate is 73.59%.
+After PCA with 40 PCs, the information rate is 94.20%.
+After PCA with 80 PCs, the information rate is 97.22%.
+After PCA with 200 PCs, the information rate is 99.41%.

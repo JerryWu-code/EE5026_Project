@@ -1,67 +1,86 @@
 import numpy as np
-from config import image_format, train_dir, test_dir, output_fig_dir, seed
+from config import *
 from data_loader import image_to_mat
 import random
 import matplotlib.pyplot as plt
 from draw import draw_PCs_faces, draw_ProjectedData
+from KNN import knn_classifier
 
 
-def PCA(image_mat, num_PCs=3, method='normal'):
+def PCA(image_mat, num_PCs=3, write_result=False, file_name=PCA_train_dir):
     mean_mat = np.mean(image_mat, axis=1).reshape(-1, 1)
     centered_mat = image_mat - mean_mat
 
-    if method == 'normal':
-        # normal: use SVD to replace the computation of S = X * X.T, eg: 1024*1024
-        U, singular_values, Vt = np.linalg.svd(centered_mat, full_matrices=False)
-        eigen_values = singular_values ** 2
-        eigen_vectors = U[:, :num_PCs].dot(U[:, :num_PCs].T)
-        # get all the eigen faces
-        eigen_faces = eigen_vectors.dot(centered_mat)
-        # get the information rate
-        information_rate = sum(eigen_values[:num_PCs]) / sum(eigen_values)
+    # use SVD to replace the computation of S = X * X.T, eg: 1024*1024
+    U, singular_values, Vt = np.linalg.svd(centered_mat, full_matrices=False)
+    eigen_values = singular_values ** 2
+    eigen_vectors = U[:, :num_PCs]
+    reconstruct_faces = np.dot(eigen_vectors.dot(eigen_vectors.T), centered_mat) + mean_mat
 
-    elif method == 'fast':
-        # fast: use SVD to reduce the computational cost, so here we use L = X.T * X, eg: 500*500
-        L = centered_mat.T.dot(centered_mat)
-        eigen_values, eigen_vectors = np.linalg.eig(L)
+    proj_mat = np.dot(eigen_vectors.T, centered_mat)
+    # get the information rate
+    information_rate = sum(eigen_values[:num_PCs]) / sum(eigen_values)
 
-        # sort the eigen_values and the corresponding eigen_vectors descending
-        sorted_indices = np.argsort(eigen_values)[::-1]
-        sorted_eigen_values = eigen_values[sorted_indices]
-        sorted_eigen_vectors = eigen_vectors[:, sorted_indices]
+    print_result = "After PCA with {0} PCs, the information rate is {1:.2f}%.\n".format(num_PCs, 100 * information_rate)
+    if write_result:
+        with open('../data/' + file_name, 'a') as file:
+            file.write(print_result)
+    print(print_result)
 
-        # get all the eigen faces
-        eigen_faces = centered_mat.dot(sorted_eigen_vectors)
-        # get the information rate
-        information_rate = sum(sorted_eigen_values[:num_PCs]) / sum(sorted_eigen_values)
-
-    print("After PCA with {0} PCs, the information rate is {1:.2f}%.".format(num_PCs, 100 * information_rate))
-
-    # get the reduced eigen faces within num_PCs, eg: 1024 by 3
-    reduced_eigen_faces = eigen_faces[:, :num_PCs] + mean_mat
-
-    # project faces from original face-space to num_PCs-space
-    proj_mat = reduced_eigen_faces.T.dot(centered_mat)  # 3 by 500
-
-    return proj_mat, reduced_eigen_faces, information_rate
+    return proj_mat, reconstruct_faces, information_rate, eigen_vectors
 
 
 if __name__ == '__main__':
-    # set the directory of the train image
-    image_dir = train_dir
+    # set the directory of the train & test image
+    image_dir1 = train_dir
+    image_dir2 = test_dir
+    save = False
 
-    # get the list of 500 samples matrix of training set images
-    train_image, new_labels, label_mapping = image_to_mat(image_dir=image_dir, target_num=500, use_selfie=True,
-                                                          seed=seed)
-    # transform the train_image (500 by 32*32) to image_mat (1024 by 500)
-    image_mat = np.array([np.ravel(i) for i in train_image]).T
+    # 1. Get data
+    #   1.1 train set
+    #       get the list of 500 samples matrix of training set images
+    train_image, train_new_labels, train_label_mapping = image_to_mat(image_dir=image_dir1, target_num=500,
+                                                                      use_selfie=True,
+                                                                      seed=seed)
+    #       transform the train_image (500 by 32*32) to image_mat (1024 by 500)
+    train_image_mat = np.array([np.ravel(i) for i in train_image]).T
 
-    # implement PCA
-    reduced_2d, reduced_eigen_faces_2d, _ = PCA(image_mat=image_mat, num_PCs=2, method='normal')
-    reduced_3d, reduced_eigen_faces_3d, _ = PCA(image_mat=image_mat, num_PCs=3, method='normal')
+    #   1.2 test set
+    #       get the list of all 1303 samples matrix of testing set images
+    test_image, test_new_labels, test_label_mapping = image_to_mat(image_dir=image_dir2, use_selfie=True, seed=seed)
+    #       transform the test_image (1303 by 32*32) to image_mat (1024 by 1303)
+    test_image_mat = np.array([np.ravel(i) for i in test_image]).T
 
-    # draw and save the eigen faces
-    # draw_PCs_faces(reduced_eigen_faces=reduced_eigen_faces_2d, save_fig=False)
-    # draw_PCs_faces(reduced_eigen_faces=reduced_eigen_faces_3d, save_fig=False)
+    # 2. Implement PCA
+    train_reduced_2d, _, _, train_reduced_eigen_faces_2d = PCA(image_mat=train_image_mat, num_PCs=2,
+                                                               write_result=save, file_name=PCA_train_dir)
+    train_reduced_3d, _, _, train_reduced_eigen_faces_3d = PCA(image_mat=train_image_mat, num_PCs=3,
+                                                               write_result=save, file_name=PCA_train_dir)
 
-    draw_ProjectedData(reduced_2d, reduced_3d, new_labels=new_labels, selfie_label=25, save_fig=False, name='PCA')
+    # 3. Draw and save the eigen faces and projection results of training set.
+    draw_PCs_faces(reduced_eigen_faces=train_reduced_eigen_faces_2d, save_fig=save)
+    draw_PCs_faces(reduced_eigen_faces=train_reduced_eigen_faces_3d, save_fig=save)
+    draw_ProjectedData(train_reduced_2d, train_reduced_3d, new_labels=train_new_labels,
+                       selfie_label=selfie_label, save_fig=save, name='PCA')
+
+    # 4. Use PCA reduce dimensionality to 40, 80, 200 respectively
+    k = 3
+    dimension_list = [40, 80, 200]
+    accuracy_list = []
+
+    selfie_indices = np.where(train_new_labels == selfie_label)[0]
+    cmupie_indices = np.where(train_new_labels != selfie_label)[0]
+
+    for group in [selfie_indices, cmupie_indices]:
+        y_train = train_new_labels[group]
+        y_test = test_new_labels[group]
+        for d in dimension_list:
+            train_reduced, _, _, trans_mat = PCA(image_mat=train_image_mat, num_PCs=d,
+                                                 write_result=save, file_name=PCA_train_dir)
+            X_train = train_reduced.T[group]
+            X_test = (np.dot(test_image_mat.T - np.mean(test_image_mat.T, axis=0), trans_mat))[group]
+
+            predicted_classes, accuracy = knn_classifier(X_train, y_train, X_test, k, y_test)
+            accuracy_list.append(accuracy)
+
+    print('Accuracy list:', accuracy_list)

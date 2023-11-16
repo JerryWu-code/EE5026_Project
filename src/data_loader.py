@@ -3,18 +3,18 @@ from PIL import Image
 import numpy as np
 from config import image_format, train_dir, test_dir, seed
 import random
+from config import *
 from collections import Counter
 import pprint
 
 
-def image_to_mat(image_dir, target_num=None, use_selfie=True, output_map=False, map_name=None, seed=seed):
+def image_to_mat(image_dir, target_num=None, use_selfie=True, output_map=False, file=None, seed=seed):
     """
     Convert images to a matrix
     :param image_dir: Directory containing the images
     :param target_num: Number of target images (optional)
     :param use_selfie: Whether to include selfies (optional)
     :param output_map: Whether to output a label mapping file (optional)
-    :param map_name: Name of the label mapping file (optional)
     :param seed: Seed for randomization (optional)
 
     :return: Images: list of images, each image 32*32
@@ -73,7 +73,7 @@ def image_to_mat(image_dir, target_num=None, use_selfie=True, output_map=False, 
 
     if output_map:
         new_dict = {}
-        with open('../data/' + map_name, 'w') as file:
+        with open(file, 'w') as f:
             for key, value in label_mapping.items():
                 new_value = {
                     'label': value,
@@ -81,18 +81,23 @@ def image_to_mat(image_dir, target_num=None, use_selfie=True, output_map=False, 
                 }
                 # file.write('{0}: {1}\n'.format(key, new_value))
                 new_dict[key] = new_value
-            file.write('Name: {0}\n\n'.format(map_name))
-            file.write(pprint.pformat(new_dict))
-            file.write('\n\nTotal number: {0}'.format(len(labels)))
+            f.write('Name: {0}\n\n'.format(file.split('/')[-1]))
+            f.write(pprint.pformat(new_dict))
+            f.write('\n\nTotal number: {0}\n'.format(len(labels)))
 
-    return images, labels, label_mapping
+    return images, np.array(labels), label_mapping
 
 
 if __name__ == '__main__':
-    image_dir = train_dir
-    train_image, new_labels, label_mapping = image_to_mat(image_dir=image_dir, target_num=500, use_selfie=True,
-                                                          output_map=True,
-                                                          map_name='PCA_train_map.txt', seed=seed)
+    image_dir1 = train_dir
+    image_dir2 = test_dir
+    train_image, train_new_labels, train_label_mapping = image_to_mat(image_dir=image_dir1, target_num=500,
+                                                                      use_selfie=True,
+                                                                      output_map=True,
+                                                                      file=PCA_train_dir, seed=seed)
+    test_image, test_new_labels, test_label_mapping = image_to_mat(image_dir=image_dir2, use_selfie=True,
+                                                                   output_map=True,
+                                                                   file=PCA_test_dir, seed=seed)
     # print(train_image)
     # print(new_labels)
     print(train_image[0], train_image[0].shape, type(train_image[0]))

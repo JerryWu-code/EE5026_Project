@@ -85,8 +85,8 @@ def draw_ProjectedData(reduced_2d, reduced_3d, new_labels, selfie_label=25, save
     """
     Plot the projected data onto 2D and 3D scatter plots respectively.
     """
-    selfie_indices = np.where(np.array(new_labels) == selfie_label)[0]
-    cmupie_indices = np.where(np.array(new_labels) != selfie_label)[0]
+    selfie_indices = np.where(new_labels == selfie_label)[0]
+    cmupie_indices = np.where(new_labels != selfie_label)[0]
     proj_PIE_2d = np.array(reduced_2d)[:, cmupie_indices]
     proj_ME_2d = np.array(reduced_2d)[:, selfie_indices]
     proj_PIE_3d = np.array(reduced_3d)[:, cmupie_indices]
@@ -110,6 +110,7 @@ def draw_ProjectedData(reduced_2d, reduced_3d, new_labels, selfie_label=25, save
     ax.set_ylabel('Principle Component 2')
     ax.set_zlabel('Principle Component 3')
     ax.set_title('3D Projection')
+    ax.view_init(azim=150, elev=20)
     # ax.view_init(azim=200, elev=30)
     ax.legend()
     plt.show()
