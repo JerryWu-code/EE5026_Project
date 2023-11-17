@@ -111,4 +111,4 @@ if __name__ == "__main__":
     draw_ProjectedData(proj_2d_3d[0], proj_2d_3d[1], new_labels=y_train,
                        selfie_label=selfie_label, save_fig=save, name='LDA')
     # Draw the accuracy curve
-    # draw_accuracy_curve(x=dimension_list, accu_mat=accu, save_fig=False, file_name='LDA & KNN')
+    draw_accuracy_curve(x=dimension_list, accu_mat=accu, save_fig=False, file_name='LDA & KNN')

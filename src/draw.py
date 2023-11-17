@@ -114,8 +114,10 @@ def draw_ProjectedData(reduced_2d, reduced_3d, new_labels, selfie_label=25, save
     ax.set_ylabel('Principle Component 2')
     ax.set_zlabel('Principle Component 3')
     ax.set_title('3D Projection')
-    ax.view_init(azim=150, elev=20)
-    # ax.view_init(azim=200, elev=30)
+    if name == 'LDA':
+        ax.view_init(azim=120, elev=20)  # LDA
+    elif name == 'PCA':
+        ax.view_init(azim=150, elev=20)  # PCA
     ax.legend()
     plt.show()
     if save_fig:
@@ -137,8 +139,8 @@ def draw_accuracy_curve(x, accu_mat: np.array, save_fig=False, file_name=None):
     ax.legend(loc='best')
     ax.set_title('{} Accuracy Curve in Testing Set'.format(file_name))
     for i, (xi, yi1, yi2) in enumerate(zip(x, 100 * accu_mat[1, :], 100 * accu_mat[0, :])):
-        ax.text(xi, yi1-5, '{:.2f}%'.format(yi1), ha='center', va='bottom', color='cornflowerblue')  # -3.5
-        ax.text(xi, yi2+2, '{:.2f}%'.format(yi2), ha='center', va='top', color='r')  # +2
+        ax.text(xi, yi1 - 5, '{:.2f}%'.format(yi1), ha='center', va='bottom', color='cornflowerblue')  # -3.5
+        ax.text(xi, yi2 + 2, '{:.2f}%'.format(yi2), ha='center', va='top', color='r')  # +2
     plt.show()
     if save_fig:
         fig.savefig(output_fig_dir + '{0}: Accuracy_Curve.png'.format(file_name))
