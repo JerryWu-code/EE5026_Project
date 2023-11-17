@@ -42,11 +42,11 @@ def perform_grid_search(X_train, y_train, X_val, y_val, param_grid):
 
 if __name__ == "__main__":
     # 1. Get data
-    X_train, y_train, X_test, y_test = get_dataset(train_num=None)
+    X_train, y_train, X_test, y_test = get_dataset(train_num=500)
 
     # 2. Define hyperparameter grid
     param_grid = {
-        'C': [0.1, 1, 10, 100],
+        'C': [0.01, 0.1, 1],
         'gamma': [1, 0.1, 0.01, 0.001]
     }
 
