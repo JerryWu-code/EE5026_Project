@@ -1,232 +1,113 @@
 Model: CNN
 
-Epoch [1/10], Average Loss: 0.0350
-Epoch [1/10], Average Loss: 0.3819
-Epoch [1/10], Average Loss: 0.7208
-Epoch [1/10], Average Loss: 1.0588
-Epoch [1/10], Average Loss: 1.3869
-Epoch [1/10], Average Loss: 1.7120
-Epoch [1/10], Average Loss: 2.0207
-Epoch [1/10], Average Loss: 2.3020
-Epoch [1/10], Average Loss: 2.5583
-Epoch [1/10], Average Loss: 2.7715
+Epoch [1/10], Last Batch Loss: 3.2516
+Epoch [1/10], Last Batch Loss: 3.1994
+Epoch [1/10], Last Batch Loss: 3.1232
+Epoch [1/10], Last Batch Loss: 3.2166
+Epoch [1/10], Last Batch Loss: 2.9164
+Epoch [1/10], Last Batch Loss: 3.0513
+Epoch [1/10], Last Batch Loss: 2.6770
+Epoch [1/10], Last Batch Loss: 2.4140
+Epoch [1/10], Last Batch Loss: 2.1302
+Epoch [1/10], Last Batch Loss: 1.8640
 ==================================================
-Epoch [2/10], Average Loss: 0.0178
-Epoch [2/10], Average Loss: 0.1711
-Epoch [2/10], Average Loss: 0.3027
-Epoch [2/10], Average Loss: 0.4275
-Epoch [2/10], Average Loss: 0.5288
-Epoch [2/10], Average Loss: 0.6100
-Epoch [2/10], Average Loss: 0.6807
-Epoch [2/10], Average Loss: 0.7460
-Epoch [2/10], Average Loss: 0.8275
-Epoch [2/10], Average Loss: 0.8958
+Epoch [2/10], Last Batch Loss: 1.6579
+Epoch [2/10], Last Batch Loss: 1.3714
+Epoch [2/10], Last Batch Loss: 1.3332
+Epoch [2/10], Last Batch Loss: 1.0789
+Epoch [2/10], Last Batch Loss: 0.6823
+Epoch [2/10], Last Batch Loss: 0.6897
+Epoch [2/10], Last Batch Loss: 0.5470
+Epoch [2/10], Last Batch Loss: 0.6669
+Epoch [2/10], Last Batch Loss: 0.6162
+Epoch [2/10], Last Batch Loss: 0.5748
 ==================================================
-Epoch [3/10], Average Loss: 0.0063
-Epoch [3/10], Average Loss: 0.0663
-Epoch [3/10], Average Loss: 0.1225
-Epoch [3/10], Average Loss: 0.1665
-Epoch [3/10], Average Loss: 0.2063
-Epoch [3/10], Average Loss: 0.2384
-Epoch [3/10], Average Loss: 0.2736
-Epoch [3/10], Average Loss: 0.3095
-Epoch [3/10], Average Loss: 0.3483
-Epoch [3/10], Average Loss: 0.3794
+Epoch [3/10], Last Batch Loss: 0.5840
+Epoch [3/10], Last Batch Loss: 0.8947
+Epoch [3/10], Last Batch Loss: 0.1337
+Epoch [3/10], Last Batch Loss: 0.4364
+Epoch [3/10], Last Batch Loss: 0.3895
+Epoch [3/10], Last Batch Loss: 0.1900
+Epoch [3/10], Last Batch Loss: 0.2055
+Epoch [3/10], Last Batch Loss: 0.2810
+Epoch [3/10], Last Batch Loss: 0.5733
+Epoch [3/10], Last Batch Loss: 0.3535
 ==================================================
-Epoch [4/10], Average Loss: 0.0020
-Epoch [4/10], Average Loss: 0.0397
-Epoch [4/10], Average Loss: 0.0692
-Epoch [4/10], Average Loss: 0.0902
-Epoch [4/10], Average Loss: 0.1085
-Epoch [4/10], Average Loss: 0.1392
-Epoch [4/10], Average Loss: 0.1625
-Epoch [4/10], Average Loss: 0.1861
-Epoch [4/10], Average Loss: 0.2061
-Epoch [4/10], Average Loss: 0.2375
+Epoch [4/10], Last Batch Loss: 0.1895
+Epoch [4/10], Last Batch Loss: 0.2544
+Epoch [4/10], Last Batch Loss: 0.3445
+Epoch [4/10], Last Batch Loss: 0.0637
+Epoch [4/10], Last Batch Loss: 0.1260
+Epoch [4/10], Last Batch Loss: 0.6849
+Epoch [4/10], Last Batch Loss: 0.2260
+Epoch [4/10], Last Batch Loss: 0.2209
+Epoch [4/10], Last Batch Loss: 0.0697
+Epoch [4/10], Last Batch Loss: 0.2495
 ==================================================
-Epoch [5/10], Average Loss: 0.0015
-Epoch [5/10], Average Loss: 0.0235
-Epoch [5/10], Average Loss: 0.0443
-Epoch [5/10], Average Loss: 0.0611
-Epoch [5/10], Average Loss: 0.0739
-Epoch [5/10], Average Loss: 0.0883
-Epoch [5/10], Average Loss: 0.1037
-Epoch [5/10], Average Loss: 0.1159
-Epoch [5/10], Average Loss: 0.1247
-Epoch [5/10], Average Loss: 0.1382
+Epoch [5/10], Last Batch Loss: 0.1440
+Epoch [5/10], Last Batch Loss: 0.1011
+Epoch [5/10], Last Batch Loss: 0.0759
+Epoch [5/10], Last Batch Loss: 0.0562
+Epoch [5/10], Last Batch Loss: 0.1317
+Epoch [5/10], Last Batch Loss: 0.0491
+Epoch [5/10], Last Batch Loss: 0.0381
+Epoch [5/10], Last Batch Loss: 0.1887
+Epoch [5/10], Last Batch Loss: 0.1048
+Epoch [5/10], Last Batch Loss: 0.0364
 ==================================================
-Epoch [6/10], Average Loss: 0.0004
-Epoch [6/10], Average Loss: 0.0115
-Epoch [6/10], Average Loss: 0.0230
-Epoch [6/10], Average Loss: 0.0316
-Epoch [6/10], Average Loss: 0.0401
-Epoch [6/10], Average Loss: 0.0479
-Epoch [6/10], Average Loss: 0.0587
-Epoch [6/10], Average Loss: 0.0672
-Epoch [6/10], Average Loss: 0.0773
-Epoch [6/10], Average Loss: 0.0914
+Epoch [6/10], Last Batch Loss: 0.0412
+Epoch [6/10], Last Batch Loss: 0.0213
+Epoch [6/10], Last Batch Loss: 0.1398
+Epoch [6/10], Last Batch Loss: 0.0333
+Epoch [6/10], Last Batch Loss: 0.0318
+Epoch [6/10], Last Batch Loss: 0.0541
+Epoch [6/10], Last Batch Loss: 0.1993
+Epoch [6/10], Last Batch Loss: 0.0715
+Epoch [6/10], Last Batch Loss: 0.0779
+Epoch [6/10], Last Batch Loss: 0.1515
 ==================================================
-Epoch [7/10], Average Loss: 0.0021
-Epoch [7/10], Average Loss: 0.0141
-Epoch [7/10], Average Loss: 0.0244
-Epoch [7/10], Average Loss: 0.0319
-Epoch [7/10], Average Loss: 0.0423
-Epoch [7/10], Average Loss: 0.0492
-Epoch [7/10], Average Loss: 0.0571
-Epoch [7/10], Average Loss: 0.0630
-Epoch [7/10], Average Loss: 0.0726
-Epoch [7/10], Average Loss: 0.0826
+Epoch [7/10], Last Batch Loss: 0.1948
+Epoch [7/10], Last Batch Loss: 0.0326
+Epoch [7/10], Last Batch Loss: 0.0435
+Epoch [7/10], Last Batch Loss: 0.0321
+Epoch [7/10], Last Batch Loss: 0.1729
+Epoch [7/10], Last Batch Loss: 0.1169
+Epoch [7/10], Last Batch Loss: 0.0616
+Epoch [7/10], Last Batch Loss: 0.0175
+Epoch [7/10], Last Batch Loss: 0.0322
+Epoch [7/10], Last Batch Loss: 0.1368
 ==================================================
-Epoch [8/10], Average Loss: 0.0002
-Epoch [8/10], Average Loss: 0.0058
-Epoch [8/10], Average Loss: 0.0101
-Epoch [8/10], Average Loss: 0.0144
-Epoch [8/10], Average Loss: 0.0199
-Epoch [8/10], Average Loss: 0.0267
-Epoch [8/10], Average Loss: 0.0317
-Epoch [8/10], Average Loss: 0.0381
-Epoch [8/10], Average Loss: 0.0435
-Epoch [8/10], Average Loss: 0.0482
+Epoch [8/10], Last Batch Loss: 0.0176
+Epoch [8/10], Last Batch Loss: 0.0357
+Epoch [8/10], Last Batch Loss: 0.0543
+Epoch [8/10], Last Batch Loss: 0.0401
+Epoch [8/10], Last Batch Loss: 0.1016
+Epoch [8/10], Last Batch Loss: 0.1015
+Epoch [8/10], Last Batch Loss: 0.0125
+Epoch [8/10], Last Batch Loss: 0.0151
+Epoch [8/10], Last Batch Loss: 0.0017
+Epoch [8/10], Last Batch Loss: 0.0208
 ==================================================
-Epoch [9/10], Average Loss: 0.0007
-Epoch [9/10], Average Loss: 0.0102
-Epoch [9/10], Average Loss: 0.0161
-Epoch [9/10], Average Loss: 0.0219
-Epoch [9/10], Average Loss: 0.0269
-Epoch [9/10], Average Loss: 0.0319
-Epoch [9/10], Average Loss: 0.0381
-Epoch [9/10], Average Loss: 0.0418
-Epoch [9/10], Average Loss: 0.0448
-Epoch [9/10], Average Loss: 0.0484
+Epoch [9/10], Last Batch Loss: 0.0638
+Epoch [9/10], Last Batch Loss: 0.2761
+Epoch [9/10], Last Batch Loss: 0.0682
+Epoch [9/10], Last Batch Loss: 0.0258
+Epoch [9/10], Last Batch Loss: 0.0164
+Epoch [9/10], Last Batch Loss: 0.0165
+Epoch [9/10], Last Batch Loss: 0.0834
+Epoch [9/10], Last Batch Loss: 0.0555
+Epoch [9/10], Last Batch Loss: 0.0123
+Epoch [9/10], Last Batch Loss: 0.0117
 ==================================================
-Epoch [10/10], Average Loss: 0.0000
-Epoch [10/10], Average Loss: 0.0025
-Epoch [10/10], Average Loss: 0.0066
-Epoch [10/10], Average Loss: 0.0086
-Epoch [10/10], Average Loss: 0.0107
-Epoch [10/10], Average Loss: 0.0128
-Epoch [10/10], Average Loss: 0.0158
-Epoch [10/10], Average Loss: 0.0190
-Epoch [10/10], Average Loss: 0.0211
-Epoch [10/10], Average Loss: 0.0228
+Epoch [10/10], Last Batch Loss: 0.0028
+Epoch [10/10], Last Batch Loss: 0.0041
+Epoch [10/10], Last Batch Loss: 0.0819
+Epoch [10/10], Last Batch Loss: 0.0184
+Epoch [10/10], Last Batch Loss: 0.0257
+Epoch [10/10], Last Batch Loss: 0.0116
+Epoch [10/10], Last Batch Loss: 0.0081
+Epoch [10/10], Last Batch Loss: 0.0065
+Epoch [10/10], Last Batch Loss: 0.0065
+Epoch [10/10], Last Batch Loss: 0.0365
 ==================================================
-Accuracy on test set: 97.77%Epoch [1/10], Average Loss: 0.0407
-Epoch [1/10], Average Loss: 0.3998
-Epoch [1/10], Average Loss: 0.7374
-Epoch [1/10], Average Loss: 1.0442
-Epoch [1/10], Average Loss: 1.3121
-Epoch [1/10], Average Loss: 1.5570
-Epoch [1/10], Average Loss: 1.7803
-Epoch [1/10], Average Loss: 1.9518
-Epoch [1/10], Average Loss: 2.1072
-Epoch [1/10], Average Loss: 2.2393
-Epoch [1/10], Average Loss: 0.0365
-Epoch [1/10], Average Loss: 0.4124
-Epoch [1/10], Average Loss: 0.7481
-Epoch [1/10], Average Loss: 1.0726
-Epoch [1/10], Average Loss: 1.3855
-Epoch [1/10], Average Loss: 1.6658
-Epoch [1/10], Average Loss: 1.9066
-Epoch [1/10], Average Loss: 2.1371
-Epoch [1/10], Average Loss: 2.3364
-Epoch [1/10], Average Loss: 2.5019
-==================================================
-Epoch [2/10], Average Loss: 0.0183
-Epoch [2/10], Average Loss: 0.1820
-Epoch [2/10], Average Loss: 0.3142
-Epoch [2/10], Average Loss: 0.4348
-Epoch [2/10], Average Loss: 0.5321
-Epoch [2/10], Average Loss: 0.6113
-Epoch [2/10], Average Loss: 0.7036
-Epoch [2/10], Average Loss: 0.7909
-Epoch [2/10], Average Loss: 0.8882
-Epoch [2/10], Average Loss: 0.9664
-==================================================
-Epoch [3/10], Average Loss: 0.0047
-Epoch [3/10], Average Loss: 0.0863
-Epoch [3/10], Average Loss: 0.1642
-Epoch [3/10], Average Loss: 0.2303
-Epoch [3/10], Average Loss: 0.3017
-Epoch [3/10], Average Loss: 0.3661
-Epoch [3/10], Average Loss: 0.4341
-Epoch [3/10], Average Loss: 0.4828
-Epoch [3/10], Average Loss: 0.5373
-Epoch [3/10], Average Loss: 0.5891
-==================================================
-Epoch [4/10], Average Loss: 0.0052
-Epoch [4/10], Average Loss: 0.0615
-Epoch [4/10], Average Loss: 0.1017
-Epoch [4/10], Average Loss: 0.1411
-Epoch [4/10], Average Loss: 0.1791
-Epoch [4/10], Average Loss: 0.2144
-Epoch [4/10], Average Loss: 0.2506
-Epoch [4/10], Average Loss: 0.2850
-Epoch [4/10], Average Loss: 0.3319
-Epoch [4/10], Average Loss: 0.3634
-==================================================
-Epoch [5/10], Average Loss: 0.0034
-Epoch [5/10], Average Loss: 0.0374
-Epoch [5/10], Average Loss: 0.0676
-Epoch [5/10], Average Loss: 0.0980
-Epoch [5/10], Average Loss: 0.1278
-Epoch [5/10], Average Loss: 0.1552
-Epoch [5/10], Average Loss: 0.1788
-Epoch [5/10], Average Loss: 0.2052
-Epoch [5/10], Average Loss: 0.2423
-Epoch [5/10], Average Loss: 0.2905
-==================================================
-Epoch [6/10], Average Loss: 0.0008
-Epoch [6/10], Average Loss: 0.0275
-Epoch [6/10], Average Loss: 0.0487
-Epoch [6/10], Average Loss: 0.0705
-Epoch [6/10], Average Loss: 0.0934
-Epoch [6/10], Average Loss: 0.1201
-Epoch [6/10], Average Loss: 0.1505
-Epoch [6/10], Average Loss: 0.1790
-Epoch [6/10], Average Loss: 0.2084
-Epoch [6/10], Average Loss: 0.2406
-==================================================
-Epoch [7/10], Average Loss: 0.0018
-Epoch [7/10], Average Loss: 0.0157
-Epoch [7/10], Average Loss: 0.0381
-Epoch [7/10], Average Loss: 0.0574
-Epoch [7/10], Average Loss: 0.0865
-Epoch [7/10], Average Loss: 0.1132
-Epoch [7/10], Average Loss: 0.1276
-Epoch [7/10], Average Loss: 0.1559
-Epoch [7/10], Average Loss: 0.1734
-Epoch [7/10], Average Loss: 0.1908
-==================================================
-Epoch [8/10], Average Loss: 0.0002
-Epoch [8/10], Average Loss: 0.0418
-Epoch [8/10], Average Loss: 0.0662
-Epoch [8/10], Average Loss: 0.0931
-Epoch [8/10], Average Loss: 0.1066
-Epoch [8/10], Average Loss: 0.1266
-Epoch [8/10], Average Loss: 0.1365
-Epoch [8/10], Average Loss: 0.1455
-Epoch [8/10], Average Loss: 0.1587
-Epoch [8/10], Average Loss: 0.1731
-==================================================
-Epoch [9/10], Average Loss: 0.0006
-Epoch [9/10], Average Loss: 0.0133
-Epoch [9/10], Average Loss: 0.0265
-Epoch [9/10], Average Loss: 0.0363
-Epoch [9/10], Average Loss: 0.0440
-Epoch [9/10], Average Loss: 0.0537
-Epoch [9/10], Average Loss: 0.0641
-Epoch [9/10], Average Loss: 0.0720
-Epoch [9/10], Average Loss: 0.0778
-Epoch [9/10], Average Loss: 0.0875
-==================================================
-Epoch [10/10], Average Loss: 0.0007
-Epoch [10/10], Average Loss: 0.0182
-Epoch [10/10], Average Loss: 0.0317
-Epoch [10/10], Average Loss: 0.0381
-Epoch [10/10], Average Loss: 0.0490
-Epoch [10/10], Average Loss: 0.0609
-Epoch [10/10], Average Loss: 0.0667
-Epoch [10/10], Average Loss: 0.0770
-Epoch [10/10], Average Loss: 0.0944
-Epoch [10/10], Average Loss: 0.1083
-==================================================
+Accuracy on test set: 97.77%

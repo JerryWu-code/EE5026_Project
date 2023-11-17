@@ -1,1 +1,113 @@
-Accuracy on test set: 95.86%
+Model: ResNet18
+
+Epoch [1/10], Last Batch Loss: 3.5517
+Epoch [1/10], Last Batch Loss: 3.4396
+Epoch [1/10], Last Batch Loss: 3.0087
+Epoch [1/10], Last Batch Loss: 2.8182
+Epoch [1/10], Last Batch Loss: 2.5973
+Epoch [1/10], Last Batch Loss: 2.6874
+Epoch [1/10], Last Batch Loss: 1.8269
+Epoch [1/10], Last Batch Loss: 2.0674
+Epoch [1/10], Last Batch Loss: 2.0257
+Epoch [1/10], Last Batch Loss: 1.7310
+==================================================
+Epoch [2/10], Last Batch Loss: 1.1464
+Epoch [2/10], Last Batch Loss: 1.6211
+Epoch [2/10], Last Batch Loss: 1.3357
+Epoch [2/10], Last Batch Loss: 1.3078
+Epoch [2/10], Last Batch Loss: 1.4916
+Epoch [2/10], Last Batch Loss: 1.1763
+Epoch [2/10], Last Batch Loss: 0.5138
+Epoch [2/10], Last Batch Loss: 0.9997
+Epoch [2/10], Last Batch Loss: 0.6041
+Epoch [2/10], Last Batch Loss: 0.8432
+==================================================
+Epoch [3/10], Last Batch Loss: 0.6645
+Epoch [3/10], Last Batch Loss: 0.7269
+Epoch [3/10], Last Batch Loss: 1.0462
+Epoch [3/10], Last Batch Loss: 0.2545
+Epoch [3/10], Last Batch Loss: 0.6792
+Epoch [3/10], Last Batch Loss: 0.6708
+Epoch [3/10], Last Batch Loss: 0.3756
+Epoch [3/10], Last Batch Loss: 0.2750
+Epoch [3/10], Last Batch Loss: 0.3201
+Epoch [3/10], Last Batch Loss: 0.8613
+==================================================
+Epoch [4/10], Last Batch Loss: 0.3006
+Epoch [4/10], Last Batch Loss: 0.2183
+Epoch [4/10], Last Batch Loss: 0.4301
+Epoch [4/10], Last Batch Loss: 0.3917
+Epoch [4/10], Last Batch Loss: 0.3485
+Epoch [4/10], Last Batch Loss: 0.2313
+Epoch [4/10], Last Batch Loss: 0.2740
+Epoch [4/10], Last Batch Loss: 0.1777
+Epoch [4/10], Last Batch Loss: 0.6846
+Epoch [4/10], Last Batch Loss: 0.5367
+==================================================
+Epoch [5/10], Last Batch Loss: 0.1825
+Epoch [5/10], Last Batch Loss: 0.3965
+Epoch [5/10], Last Batch Loss: 0.1799
+Epoch [5/10], Last Batch Loss: 0.0886
+Epoch [5/10], Last Batch Loss: 0.0387
+Epoch [5/10], Last Batch Loss: 0.2998
+Epoch [5/10], Last Batch Loss: 0.5442
+Epoch [5/10], Last Batch Loss: 0.2080
+Epoch [5/10], Last Batch Loss: 0.3839
+Epoch [5/10], Last Batch Loss: 0.1601
+==================================================
+Epoch [6/10], Last Batch Loss: 0.1066
+Epoch [6/10], Last Batch Loss: 0.2897
+Epoch [6/10], Last Batch Loss: 0.3170
+Epoch [6/10], Last Batch Loss: 0.3182
+Epoch [6/10], Last Batch Loss: 0.4649
+Epoch [6/10], Last Batch Loss: 0.4012
+Epoch [6/10], Last Batch Loss: 0.0793
+Epoch [6/10], Last Batch Loss: 0.2173
+Epoch [6/10], Last Batch Loss: 0.1025
+Epoch [6/10], Last Batch Loss: 0.0595
+==================================================
+Epoch [7/10], Last Batch Loss: 0.0453
+Epoch [7/10], Last Batch Loss: 0.5464
+Epoch [7/10], Last Batch Loss: 0.0246
+Epoch [7/10], Last Batch Loss: 0.1220
+Epoch [7/10], Last Batch Loss: 0.1798
+Epoch [7/10], Last Batch Loss: 0.1383
+Epoch [7/10], Last Batch Loss: 0.1106
+Epoch [7/10], Last Batch Loss: 0.1866
+Epoch [7/10], Last Batch Loss: 0.0509
+Epoch [7/10], Last Batch Loss: 0.1089
+==================================================
+Epoch [8/10], Last Batch Loss: 0.0131
+Epoch [8/10], Last Batch Loss: 0.1139
+Epoch [8/10], Last Batch Loss: 0.1465
+Epoch [8/10], Last Batch Loss: 0.3037
+Epoch [8/10], Last Batch Loss: 0.0993
+Epoch [8/10], Last Batch Loss: 0.2577
+Epoch [8/10], Last Batch Loss: 0.2371
+Epoch [8/10], Last Batch Loss: 0.0373
+Epoch [8/10], Last Batch Loss: 0.1417
+Epoch [8/10], Last Batch Loss: 0.0285
+==================================================
+Epoch [9/10], Last Batch Loss: 0.0974
+Epoch [9/10], Last Batch Loss: 0.0426
+Epoch [9/10], Last Batch Loss: 0.3329
+Epoch [9/10], Last Batch Loss: 0.0906
+Epoch [9/10], Last Batch Loss: 0.0871
+Epoch [9/10], Last Batch Loss: 0.2907
+Epoch [9/10], Last Batch Loss: 0.0689
+Epoch [9/10], Last Batch Loss: 0.0404
+Epoch [9/10], Last Batch Loss: 0.1354
+Epoch [9/10], Last Batch Loss: 0.0249
+==================================================
+Epoch [10/10], Last Batch Loss: 0.0716
+Epoch [10/10], Last Batch Loss: 0.0224
+Epoch [10/10], Last Batch Loss: 0.1410
+Epoch [10/10], Last Batch Loss: 0.0118
+Epoch [10/10], Last Batch Loss: 0.0061
+Epoch [10/10], Last Batch Loss: 0.1578
+Epoch [10/10], Last Batch Loss: 0.0367
+Epoch [10/10], Last Batch Loss: 0.0338
+Epoch [10/10], Last Batch Loss: 0.1075
+Epoch [10/10], Last Batch Loss: 0.1798
+==================================================
+Accuracy on test set: 98.00%

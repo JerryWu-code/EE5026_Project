@@ -173,7 +173,7 @@ def plot_loss_history(loss_histories, labels, title='Training Loss History',
     :param xlabel: Label for the X-axis.
     :param ylabel: Label for the Y-axis.
     """
-    plt.figure(figsize=(12, 6))
+    fig = plt.figure(figsize=(12, 6))
     for loss_history, label in zip(loss_histories, labels):
         plt.plot(loss_history, label=label)
 
@@ -189,7 +189,7 @@ def plot_loss_history(loss_histories, labels, title='Training Loss History',
 
 if __name__ == "__main__":
     image_dir = train_dir
-    save = False
+    save = True
 
     train_image, new_labels, label_mapping = image_to_mat(image_dir=image_dir, target_num=train_target_num,
                                                           use_selfie=True)
@@ -204,5 +204,5 @@ if __name__ == "__main__":
     # 3. Draw the training loss of CNN and ResNet18.
     loss_history_model1 = read_loss_history_from_csv(cnn_loss_dir)
     loss_history_model2 = read_loss_history_from_csv(resnet18_loss_dir)
-    plot_loss_history(loss_histories=[loss_history_model1, loss_history_model2],
-                      labels=['CNN', 'ResNet-18'])
+    plot_loss_history(loss_histories=[loss_history_model2, loss_history_model1],
+                      labels=['ResNet-18', 'CNN'], save_fig=save)

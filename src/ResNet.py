@@ -60,13 +60,13 @@ def get_data_loaders():
 
 
 # Function to train the model
-def train_model(cnn_model, train_loader, criterion, optimizer, scheduler, num_epochs):
+def train_model(res_model, train_loader, criterion, optimizer, scheduler, num_epochs):
     loss_history = []
     for epoch in range(num_epochs):
         total_loss = 0
         for i, (images, labels) in enumerate(train_loader):
             optimizer.zero_grad()
-            outputs = cnn_model(images)
+            outputs = res_model(images)
             loss = criterion(outputs, labels)
             total_loss += loss.item()
             loss_history.append(loss.item())
@@ -82,18 +82,19 @@ def train_model(cnn_model, train_loader, criterion, optimizer, scheduler, num_ep
                 elif epoch_loss == 'last_batch':
                     log1 = 'Epoch [{}/{}], Last Batch Loss: {:.4f}'.format(epoch + 1, num_epochs, loss.item())
 
-                with open(cnn_log_dir, 'a') as f:
+                with open(resnet18_log_dir, 'a') as f:
                     f.write(log1 + '\n')
                 print(log1)
 
         # update the learning rate
         scheduler.step()
 
-        with open(cnn_log_dir, 'a') as f:
+        with open(resnet18_log_dir, 'a') as f:
             f.write('=' * 50 + '\n')
         print('=' * 50)  # Print a dividing line after each epoch
 
     return loss_history
+
 
 # Function to calculate predictions and accuracy
 def get_predictions_and_accuracy(model, data_loader):
@@ -149,7 +150,13 @@ def predict_single_image(model, image_path):
 def main():
     resnet_model = ResNet()
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(resnet_model.parameters(), lr=learning_rate_)
+    if resnet18_norm_gradient:
+        torch.nn.utils.clip_grad_norm_(resnet_model.parameters(), max_norm=1.0)
+    if resnet18_L2_norm:
+        optimizer = optim.Adam(resnet_model.parameters(), lr=learning_rate_, weight_decay=1e-4)
+    else:
+        optimizer = optim.Adam(resnet_model.parameters(), lr=learning_rate_)
+
     scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=gamma_)
     train_loader, test_loader = get_data_loaders()
     loss_history = train_model(resnet_model, train_loader, criterion, optimizer, scheduler, num_epochs=num_epochs)
@@ -170,6 +177,7 @@ def main():
 
 
 if __name__ == "__main__":
-    with open(resnet18_model_dir, 'w') as f:
+    set_random_seed(seed)
+    with open(resnet18_log_dir, 'w') as f:
         f.write('Model: ResNet18\n\n')
     main()

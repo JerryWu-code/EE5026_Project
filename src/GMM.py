@@ -1,4 +1,6 @@
 import numpy as np
+from data_loader import *
+
 
 class GaussianMixture:
     def __init__(self, n_components, n_iter=100, tol=1e-3):
@@ -25,8 +27,10 @@ class GaussianMixture:
             # M-step: update parameters based on responsibilities
             self._m_step(X, responsibilities)
 
-            # Check for convergence
+            # Check for convergence with additional safeguard against invalid values
             log_likelihood_new = self._log_likelihood(X)
+            if np.isnan(log_likelihood_new) or np.isinf(log_likelihood_new):
+                break
             if abs(log_likelihood_new - log_likelihood_old) < self.tol:
                 break
             log_likelihood_old = log_likelihood_new
@@ -44,29 +48,43 @@ class GaussianMixture:
         # Calculate likelihood of each component for each sample
         likelihood = np.array([self._pdf(X, k) for k in range(self.n_components)]).T
         # Calculate responsibilities
-        total_likelihood = likelihood.dot(self.weights)
+        epsilon = 1e-6  # A small constant for numerical stability
+        total_likelihood = likelihood.dot(self.weights) + epsilon
         return (likelihood * self.weights) / total_likelihood[:, np.newaxis]
 
     def _m_step(self, X, responsibilities):
         n_samples = X.shape[0]
         weights = responsibilities.sum(axis=0)
         self.weights = weights / n_samples
-        self.means = np.dot(responsibilities.T, X) / weights[:, np.newaxis]
+        epsilon = 1e-6  # A small constant for numerical stability
+        # Update means with a small constant to prevent division by zero
+        self.means = np.dot(responsibilities.T, X) / (weights[:, np.newaxis] + epsilon)
         for k in range(self.n_components):
             diff = X - self.means[k]
             # Update covariance matrices
-            self.covariances[k] = np.dot((responsibilities[:, k, np.newaxis] * diff).T, diff) / weights[k]
+            self.covariances[k] = np.dot((responsibilities[:, k, np.newaxis] * diff).T, diff) / (weights[k] + epsilon)
 
     def _pdf(self, X, component_idx):
-        # Calculate the probability density function of a Gaussian
         mean = self.means[component_idx]
         cov = self.covariances[component_idx]
-        return np.exp(np.dot(-0.5 * np.sum((X - mean), np.linalg.inv(cov) * (X - mean), axis=1))) / np.sqrt(
-            np.linalg.det(cov) * (2 * np.pi) ** X.shape[1])
+        # Regularization to avoid singular covariance matrix
+        reg_cov = cov + np.eye(cov.shape[0]) * 1e-6
+        inv_cov = np.linalg.inv(reg_cov)
+        det_cov = np.linalg.det(reg_cov)
+        # Avoiding division by zero or negative determinant
+        if det_cov < 1e-9:
+            det_cov = 1e-9
+        norm_const = np.sqrt(det_cov * (2 * np.pi) ** X.shape[1])
+        return np.exp(-0.5 * np.sum((X - mean) @ inv_cov * (X - mean), axis=1)) / norm_const
 
     def _log_likelihood(self, X):
-        # Calculate log likelihood of the data under the current model
-        return np.sum(np.log(np.array([self._pdf(X, k) for k in range(self.n_components)]).T.dot(self.weights)))
+        pdf_values = np.array([self._pdf(X, k) for k in range(self.n_components)]).T
+        # Ensure no zero values before dot product
+        pdf_values = np.maximum(pdf_values, 1e-9)
+        weighted_pdf = pdf_values.dot(self.weights)
+        # Ensure no zero values before log
+        weighted_pdf = np.maximum(weighted_pdf, 1e-9)
+        return np.sum(np.log(weighted_pdf))
 
     def predict(self, X):
         # E-step to get responsibilities
@@ -76,20 +94,21 @@ class GaussianMixture:
 
 
 if __name__ == "__main__":
-    np.random.seed(0)
-
-    mean1 = [2, 2]
-    cov1 = [[1, 0], [0, 1]]
-    data1 = np.random.multivariate_normal(mean1, cov1, 100)
-
-    mean2 = [8, 8]
-    cov2 = [[1.5, 0], [0, 1.5]]
-    data2 = np.random.multivariate_normal(mean2, cov2, 100)
-
-    data = np.vstack((data1, data2))
-
-    gmm = GaussianMixture(n_components=2)
-    gmm.fit(data)
-    print(gmm.predict(data))
-    print(gmm.covariances)
-    print(gmm.means)
+    np.random.seed(5026)
+    # mean1 = [2, 2]
+    # cov1 = [[1, 0], [0, 1]]
+    # data1 = np.random.multivariate_normal(mean1, cov1, 100)
+    # mean2 = [8, 8]
+    # cov2 = [[1.5, 0], [0, 1.5]]
+    # data2 = np.random.multivariate_normal(mean2, cov2, 100)
+    # data = np.vstack((data1, data2))
+    # gmm = GaussianMixture(n_components=2)
+    # gmm.fit(data)
+    # print(gmm.predict(data))
+    #
+    X_train, y_train, X_test, y_test = get_dataset(train_num=None)
+    gmm = GaussianMixture(n_components=3)
+    gmm.fit(X_train[:, :3])
+    print(gmm.predict(X_train[:, :3]).max())
+    # print(gmm.covariances)
+    # print(gmm.means)
