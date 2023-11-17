@@ -78,7 +78,7 @@ def draw_PCs_faces(reduced_eigen_faces, save_fig=False):
 
         ax.imshow(image_data, cmap='gray')
         ax.axis('off')
-        name = '{1}PCs: Eigen Face #{0}'.format(i + 1, num_PCs)
+        name = 'Eigen Face #{0}'.format(i + 1)
         ax.set_title(name)
         plt.show()
         if save_fig:

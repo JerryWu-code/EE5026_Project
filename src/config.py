@@ -8,6 +8,7 @@ image_format = tuple(('.png', '.jpg', '.jpeg'))
 ##########
 
 # PCA & LDA Settings:
+# dimensionality reduction range
 PCA_dimension_list = [40, 80, 200]
 LDA_dimension_list = [2, 3, 9]
 # select which selfie you want to reconstruct
@@ -18,10 +19,21 @@ seed = 5026
 selfie_label = 25
 # set training set size
 train_target_num = 500
+# set directory
+PCA_train_dir = '../data/PCA_train_map.txt'
+PCA_test_dir = '../data/PCA_test_map.txt'
 
 ##########
 
-# set directory
+# CNN Settings:
+# set epoch loss type
+epoch_loss = 'last_batch'  # set 'average' or 'last_batch'.
+# set model path
+model_dir = '../data/cnn_model.pth'
+
+##########
+
+# set overall directory
 data_dir = '../data'
 train_dir = '../data/train'
 test_dir = '../data/test'
@@ -31,6 +43,3 @@ raw_selfie_dir = '../data/raw_selfie/'
 final_selfie_dir = '../data/final_selfie/'
 
 output_fig_dir = '../figs/'
-
-PCA_train_dir = '../data/PCA_train_map.txt'
-PCA_test_dir = '../data/PCA_test_map.txt'
