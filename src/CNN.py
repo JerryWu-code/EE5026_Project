@@ -78,9 +78,17 @@ def train_model(cnn_model, train_loader, criterion, optimizer, num_epochs):
             if i % 10 == 0:
                 if epoch_loss == 'average':
                     average_loss = total_loss / len(train_loader)
-                    print('Epoch [{}/{}], Average Loss: {:.4f}'.format(epoch + 1, num_epochs, average_loss))
+                    log1 = 'Epoch [{}/{}], Average Loss: {:.4f}'.format(epoch + 1, num_epochs, average_loss)
+
                 elif epoch_loss == 'last_batch':
-                    print('Epoch [{}/{}], Last Batch Loss: {:.4f}'.format(epoch + 1, num_epochs, loss.item()))
+                    log1 = 'Epoch [{}/{}], Last Batch Loss: {:.4f}'.format(epoch + 1, num_epochs, loss.item())
+
+                with open(cnn_log_dir, 'a') as f:
+                    f.write(log1 + '\n')
+                print(log1)
+
+        with open(cnn_log_dir, 'a') as f:
+            f.write('=' * 50 + '\n')
         print('=' * 50)  # Print a dividing line after each epoch
 
 
@@ -138,17 +146,23 @@ def main():
     optimizer = optim.Adam(cnn_model.parameters(), lr=0.001)
     train_loader, test_loader = get_data_loaders()
     train_model(cnn_model, train_loader, criterion, optimizer, num_epochs=10)
-    torch.save(cnn_model.state_dict(), model_dir)
+    torch.save(cnn_model.state_dict(), cnn_model_dir)
 
     # Load the model and evaluate on test data
-    cnn_model.load_state_dict(torch.load(model_dir))
+    cnn_model.load_state_dict(torch.load(cnn_model_dir))
     test_predictions, accuracy = get_predictions_and_accuracy(cnn_model, test_loader)
     # print("All predicted labels on the test set:")
-    print(test_predictions)
-    print('Accuracy on test set: {:.2f}%'.format(accuracy))
+    # print(test_predictions)
+
+    log2 = 'Accuracy on test set: {:.2f}%'.format(accuracy)
+    with open(cnn_log_dir, 'a') as f:
+        f.write(log2)
+    print(log2)
 
 
 if __name__ == "__main__":
+    with open(cnn_log_dir, 'w') as f:
+        f.write('Model: CNN\n\n')
     main()
 
     # Load the model to predict a single image

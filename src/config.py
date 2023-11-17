@@ -29,7 +29,11 @@ PCA_test_dir = '../data/PCA_test_map.txt'
 # set epoch loss type
 epoch_loss = 'last_batch'  # set 'average' or 'last_batch'.
 # set model path
-model_dir = '../data/cnn_model.pth'
+cnn_model_dir = '../data/cnn_model.pth'
+resnet18_model_dir = '../data/resnet18_model.pth'
+# set output log path
+cnn_log_dir = '../data/cnn_log.txt'
+resnet18_log_dir = '../data/resnet18_log.txt'
 
 ##########
 

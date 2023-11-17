@@ -12,8 +12,9 @@ from config import *
 class ResNet(nn.Module):
     def __init__(self, num_classes=26):
         super(ResNet, self).__init__()
-        # Load a pre-trained ResNet18 model
-        self.model = models.resnet18(pretrained=True)
+        # Load a pre-trained ResNet18 model with new weights parameter
+        weights = ResNet18_Weights.IMAGENET1K_V1
+        self.model = models.resnet18(weights=weights)
         # Modify the input layer to accept grayscale images
         self.model.conv1 = nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
         # Modify the output layer to match the number of classes
@@ -72,9 +73,17 @@ def train_model(cnn_model, train_loader, criterion, optimizer, num_epochs):
             if i % 10 == 0:
                 if epoch_loss == 'average':
                     average_loss = total_loss / len(train_loader)
-                    print('Epoch [{}/{}], Average Loss: {:.4f}'.format(epoch + 1, num_epochs, average_loss))
+                    log1 = 'Epoch [{}/{}], Average Loss: {:.4f}'.format(epoch + 1, num_epochs, average_loss)
+
                 elif epoch_loss == 'last_batch':
-                    print('Epoch [{}/{}], Last Batch Loss: {:.4f}'.format(epoch + 1, num_epochs, loss.item()))
+                    log1 = 'Epoch [{}/{}], Last Batch Loss: {:.4f}'.format(epoch + 1, num_epochs, loss.item())
+
+                with open(cnn_log_dir, 'a') as f:
+                    f.write(log1 + '\n')
+                print(log1)
+
+        with open(cnn_log_dir, 'a') as f:
+            f.write('=' * 50 + '\n')
         print('=' * 50)  # Print a dividing line after each epoch
 
 
@@ -135,14 +144,20 @@ def main():
     optimizer = optim.Adam(resnet_model.parameters(), lr=0.001)
     train_loader, test_loader = get_data_loaders()
     train_model(resnet_model, train_loader, criterion, optimizer, num_epochs=10)
-    torch.save(resnet_model.state_dict(), model_dir)
+    torch.save(resnet_model.state_dict(), resnet18_model_dir)
 
     # Load the model and evaluate on test data
-    resnet_model.load_state_dict(torch.load(model_dir))
+    resnet_model.load_state_dict(torch.load(resnet18_model_dir))
     test_predictions, accuracy = get_predictions_and_accuracy(resnet_model, test_loader)
     # print(test_predictions)
-    print('Accuracy on test set: {:.2f}%'.format(accuracy))
+
+    log2 = 'Accuracy on test set: {:.2f}%'.format(accuracy)
+    with open(cnn_log_dir, 'a') as f:
+        f.write(log2)
+    print(log2)
 
 
 if __name__ == "__main__":
+    with open(resnet18_model_dir, 'w') as f:
+        f.write('Model: ResNet18\n\n')
     main()
