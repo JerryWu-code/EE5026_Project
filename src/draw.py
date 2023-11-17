@@ -1,8 +1,8 @@
-from data_loader import image_to_mat
+from data_loader import *
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-from config import image_format, train_dir, test_dir, output_fig_dir
+from config import *
 
 
 def draw_faces(faces_mat, sub_width=None, save_fig=False, title_lst=None, file_name=None):
@@ -88,6 +88,21 @@ def draw_PCs_faces(reduced_eigen_faces, save_fig=False):
 def draw_ProjectedData(reduced_2d, reduced_3d, new_labels, selfie_label=25, save_fig=False, name=None):
     """
     Plot the projected data onto 2D and 3D scatter plots respectively.
+    :param reduced_2d: Array containing the data projected onto 2 dimensions.
+                       Each column represents a data point.
+    :param reduced_3d: Array containing the data projected onto 3 dimensions.
+                       Each column represents a data point.
+    :param new_labels: Array of labels for each data point. Used to differentiate
+                       different categories in the plot.
+    :param selfie_label: The label assigned to the 'selfie' category. Default is 25.
+                         Data points with this label will be plotted with a different color.
+    :param save_fig: Boolean flag indicating whether to save the plot to a file.
+                     If True, the plot will be saved.
+    :param name: Optional string representing the name of the projection method used
+                 (e.g., 'PCA', 'LDA'). This is used for the plot title and for saving the file.
+
+    If 'save_fig' is True, the plot will be saved to the path specified by
+    'output_fig_dir' with the file name 'Projection of {name}.png'.
     """
     selfie_indices = np.where(new_labels == selfie_label)[0]
     cmupie_indices = np.where(new_labels != selfie_label)[0]
@@ -146,13 +161,48 @@ def draw_accuracy_curve(x, accu_mat: np.array, save_fig=False, file_name=None):
         fig.savefig(output_fig_dir + '{0}: Accuracy_Curve.png'.format(file_name))
 
 
+def plot_loss_history(loss_histories, labels, title='Training Loss History',
+                      xlabel='Iterations', ylabel='Loss', save_fig=False):
+    """
+    Plot the training loss history for different models.
+
+    :param save_fig: whether save the figure or not.
+    :param loss_histories: A list of loss histories (list of lists).
+    :param labels: A list of labels for each loss history.
+    :param title: Title of the plot.
+    :param xlabel: Label for the X-axis.
+    :param ylabel: Label for the Y-axis.
+    """
+    plt.figure(figsize=(12, 6))
+    for loss_history, label in zip(loss_histories, labels):
+        plt.plot(loss_history, label=label)
+
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.legend(loc='best')
+    plt.grid()
+    plt.show()
+    if save_fig:
+        fig.savefig(output_fig_dir + '{0}.png'.format(title))
+
+
 if __name__ == "__main__":
     image_dir = train_dir
+    save = False
 
     train_image, new_labels, label_mapping = image_to_mat(image_dir=image_dir, target_num=train_target_num,
                                                           use_selfie=True)
-    # draw_mean_face(train_image)
+    # 1. Draw the mean face.
+    # draw_mean_face(train_image, save_fig=save)
 
+    # 2. Draw the selfie faces.
     selfie_indices = np.where(np.array(new_labels) == 25)[0]
-    draw_faces(faces_mat=np.array(train_image)[selfie_indices], sub_width=4, save_fig=True,
+    draw_faces(faces_mat=np.array(train_image)[selfie_indices], sub_width=4, save_fig=save,
                file_name='My_Selfie')
+
+    # 3. Draw the training loss of CNN and ResNet18.
+    loss_history_model1 = read_loss_history_from_csv(cnn_loss_dir)
+    loss_history_model2 = read_loss_history_from_csv(resnet18_loss_dir)
+    plot_loss_history(loss_histories=[loss_history_model1, loss_history_model2],
+                      labels=['CNN', 'ResNet-18'])

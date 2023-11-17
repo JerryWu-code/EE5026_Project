@@ -3,9 +3,11 @@ import torch.nn as nn
 import torch.optim as optim
 from torchvision import datasets, transforms, models
 from torch.utils.data import DataLoader
+from torchvision.models import ResNet18_Weights
 import torch.nn.functional as F
 from PIL import Image
 from config import *
+from data_loader import *
 
 
 # Define the ResNet model
@@ -42,7 +44,7 @@ def get_data_loaders():
 
     # Load training data
     train_dataset = datasets.ImageFolder(root=train_dir, transform=transform)
-    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+    train_loader = DataLoader(train_dataset, batch_size=batchsize, shuffle=True)
 
     # Load testing data
     test_transform = transforms.Compose([
@@ -52,13 +54,14 @@ def get_data_loaders():
         transforms.Normalize(mean=[0.5], std=[0.5])
     ])
     test_dataset = datasets.ImageFolder(root=test_dir, transform=test_transform)
-    test_loader = DataLoader(test_dataset, batch_size=32, shuffle=True)
+    test_loader = DataLoader(test_dataset, batch_size=batchsize, shuffle=True)
 
     return train_loader, test_loader
 
 
 # Function to train the model
-def train_model(cnn_model, train_loader, criterion, optimizer, num_epochs):
+def train_model(cnn_model, train_loader, criterion, optimizer, scheduler, num_epochs):
+    loss_history = []
     for epoch in range(num_epochs):
         total_loss = 0
         for i, (images, labels) in enumerate(train_loader):
@@ -66,6 +69,7 @@ def train_model(cnn_model, train_loader, criterion, optimizer, num_epochs):
             outputs = cnn_model(images)
             loss = criterion(outputs, labels)
             total_loss += loss.item()
+            loss_history.append(loss.item())
             loss.backward()
             optimizer.step()
 
@@ -82,10 +86,14 @@ def train_model(cnn_model, train_loader, criterion, optimizer, num_epochs):
                     f.write(log1 + '\n')
                 print(log1)
 
+        # update the learning rate
+        scheduler.step()
+
         with open(cnn_log_dir, 'a') as f:
             f.write('=' * 50 + '\n')
         print('=' * 50)  # Print a dividing line after each epoch
 
+    return loss_history
 
 # Function to calculate predictions and accuracy
 def get_predictions_and_accuracy(model, data_loader):
@@ -141,9 +149,13 @@ def predict_single_image(model, image_path):
 def main():
     resnet_model = ResNet()
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(resnet_model.parameters(), lr=0.001)
+    optimizer = optim.Adam(resnet_model.parameters(), lr=learning_rate_)
+    scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=gamma_)
     train_loader, test_loader = get_data_loaders()
-    train_model(resnet_model, train_loader, criterion, optimizer, num_epochs=10)
+    loss_history = train_model(resnet_model, train_loader, criterion, optimizer, scheduler, num_epochs=num_epochs)
+
+    # save the loss history and model
+    save_loss_history_to_csv(loss_history, resnet18_loss_dir)
     torch.save(resnet_model.state_dict(), resnet18_model_dir)
 
     # Load the model and evaluate on test data
@@ -152,7 +164,7 @@ def main():
     # print(test_predictions)
 
     log2 = 'Accuracy on test set: {:.2f}%'.format(accuracy)
-    with open(cnn_log_dir, 'a') as f:
+    with open(resnet18_log_dir, 'a') as f:
         f.write(log2)
     print(log2)
 

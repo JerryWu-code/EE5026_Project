@@ -2,6 +2,8 @@ import os
 from PIL import Image
 import numpy as np
 from config import *
+import csv
+import torch
 import random
 from collections import Counter
 import pprint
@@ -86,6 +88,7 @@ def image_to_mat(image_dir, target_num=None, use_selfie=True, output_map=False, 
 
     return images, np.array(labels), label_mapping
 
+
 def get_dataset(train_num=train_target_num):
     """
     Get the dataset and label mapping
@@ -103,7 +106,7 @@ def get_dataset(train_num=train_target_num):
     train_image_mat = np.array([np.ravel(i) for i in train_image])  # 500 * 1024
     # Test
     test_image, test_new_labels, test_label_mapping = image_to_mat(image_dir=image_dir2, use_selfie=True, seed=seed)
-    test_image_mat = np.array([np.ravel(i) for i in test_image])   # 1303 * 1024
+    test_image_mat = np.array([np.ravel(i) for i in test_image])  # 1303 * 1024
 
     X_train = train_image_mat
     y_train = train_new_labels
@@ -111,6 +114,47 @@ def get_dataset(train_num=train_target_num):
     y_test = test_new_labels
 
     return X_train, y_train, X_test, y_test
+
+
+def save_loss_history_to_csv(loss_history, file_name):
+    """
+    Save the loss history to a CSV file.
+
+    :param loss_history: List of loss values.
+    :param file_name: Name of the file to save the loss history.
+    """
+    with open(file_name, 'w', newline='') as file:
+        writer = csv.writer(file)
+        for loss in loss_history:
+            writer.writerow([loss])
+
+
+def read_loss_history_from_csv(file_name):
+    """
+    Read a loss history from a CSV file.
+
+    :param file_name: Name of the file to read the loss history from.
+    :return: List of loss values.
+    """
+    loss_history = []
+    with open(file_name, 'r') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if row:  # Avoid empty rows
+                loss_history.append(float(row[0]))
+    return loss_history
+
+
+def set_random_seed(seed_value):
+    """
+    Set the random seed for reproducible results.
+
+    :param seed_value: An integer value for the seed.
+    """
+    random.seed(seed_value)
+    np.random.seed(seed_value)
+    torch.manual_seed(seed_value)
+
 
 if __name__ == '__main__':
     image_dir1 = train_dir

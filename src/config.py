@@ -25,15 +25,26 @@ PCA_test_dir = '../data/PCA_test_map.txt'
 
 ##########
 
-# CNN Settings:
-# set epoch loss type
-epoch_loss = 'last_batch'  # set 'average' or 'last_batch'.
-# set model path
+# CNN  & ResNet Settings:
+# set the same batchsize num_epochs.
+batchsize = 32
+num_epochs = 10
+# set the learning rate, gamma(learning rate loss) respectively.
+gamma = 1
+learning_rate = 0.001
+gamma_ = 0.95
+learning_rate_ = 0.001
+# set epoch loss type.
+epoch_loss = 'average'  # set 'average' or 'last_batch'.
+# set model path.
 cnn_model_dir = '../data/cnn_model.pth'
 resnet18_model_dir = '../data/resnet18_model.pth'
-# set output log path
+# set output log path.
 cnn_log_dir = '../data/cnn_log.txt'
 resnet18_log_dir = '../data/resnet18_log.txt'
+# set the training loss history path.
+cnn_loss_dir = '../data/cnn_loss.csv'
+resnet18_loss_dir = '../data/resnet18_loss.csv'
 
 ##########
 

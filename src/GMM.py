@@ -51,17 +51,17 @@ class GaussianMixture:
         n_samples = X.shape[0]
         weights = responsibilities.sum(axis=0)
         self.weights = weights / n_samples
-        self.means = (responsibilities.T @ X) / weights[:, np.newaxis]
+        self.means = np.dot(responsibilities.T, X) / weights[:, np.newaxis]
         for k in range(self.n_components):
             diff = X - self.means[k]
             # Update covariance matrices
-            self.covariances[k] = (responsibilities[:, k, np.newaxis] * diff).T @ diff / weights[k]
+            self.covariances[k] = np.dot((responsibilities[:, k, np.newaxis] * diff).T, diff) / weights[k]
 
     def _pdf(self, X, component_idx):
         # Calculate the probability density function of a Gaussian
         mean = self.means[component_idx]
         cov = self.covariances[component_idx]
-        return np.exp(-0.5 * np.sum((X - mean) @ np.linalg.inv(cov) * (X - mean), axis=1)) / np.sqrt(
+        return np.exp(np.dot(-0.5 * np.sum((X - mean), np.linalg.inv(cov) * (X - mean), axis=1))) / np.sqrt(
             np.linalg.det(cov) * (2 * np.pi) ** X.shape[1])
 
     def _log_likelihood(self, X):

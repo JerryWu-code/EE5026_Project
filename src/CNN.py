@@ -5,8 +5,8 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 import torch.nn.functional as F
 from PIL import Image
-# Import configurations, e.g., epoch_loss from a config file
 from config import *
+from data_loader import *
 
 
 # Define the CNN model
@@ -47,7 +47,7 @@ def get_data_loaders():
 
     # Load training data
     train_dataset = datasets.ImageFolder(root=train_dir, transform=transform)
-    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+    train_loader = DataLoader(train_dataset, batch_size=batchsize, shuffle=True)
 
     # Load testing data
     test_transform = transforms.Compose([
@@ -57,13 +57,14 @@ def get_data_loaders():
         transforms.Normalize(mean=[0.5], std=[0.5])
     ])
     test_dataset = datasets.ImageFolder(root=test_dir, transform=test_transform)
-    test_loader = DataLoader(test_dataset, batch_size=32, shuffle=True)
+    test_loader = DataLoader(test_dataset, batch_size=batchsize, shuffle=True)
 
     return train_loader, test_loader
 
 
 # Function to train the model
-def train_model(cnn_model, train_loader, criterion, optimizer, num_epochs):
+def train_model(cnn_model, train_loader, criterion, optimizer, scheduler, num_epochs):
+    loss_history = []  # To store loss values
     for epoch in range(num_epochs):
         total_loss = 0
         for i, (images, labels) in enumerate(train_loader):
@@ -71,6 +72,7 @@ def train_model(cnn_model, train_loader, criterion, optimizer, num_epochs):
             outputs = cnn_model(images)
             loss = criterion(outputs, labels)
             total_loss += loss.item()
+            loss_history.append(loss.item())
             loss.backward()
             optimizer.step()
 
@@ -87,9 +89,14 @@ def train_model(cnn_model, train_loader, criterion, optimizer, num_epochs):
                     f.write(log1 + '\n')
                 print(log1)
 
+        # update the learning rate
+        scheduler.step()
+
         with open(cnn_log_dir, 'a') as f:
             f.write('=' * 50 + '\n')
         print('=' * 50)  # Print a dividing line after each epoch
+
+    return loss_history
 
 
 # Function to calculate predictions and accuracy
@@ -123,6 +130,7 @@ def preprocess_image(image_path):
     image = transform(image).unsqueeze(0)
     return image
 
+
 # Function to predict the class of a single image
 def predict_single_image(model, image_path):
     # Preprocess the image
@@ -139,13 +147,18 @@ def predict_single_image(model, image_path):
 
     return predicted_class
 
+
 # Main function to orchestrate the training and testing
 def main():
     cnn_model = CNN()
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(cnn_model.parameters(), lr=0.001)
+    optimizer = optim.Adam(cnn_model.parameters(), lr=learning_rate)
+    scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=gamma)
     train_loader, test_loader = get_data_loaders()
-    train_model(cnn_model, train_loader, criterion, optimizer, num_epochs=10)
+    loss_history = train_model(cnn_model, train_loader, criterion, optimizer, scheduler, num_epochs=num_epochs)
+
+    # save the loss history and model
+    save_loss_history_to_csv(loss_history, cnn_loss_dir)
     torch.save(cnn_model.state_dict(), cnn_model_dir)
 
     # Load the model and evaluate on test data
@@ -161,12 +174,13 @@ def main():
 
 
 if __name__ == "__main__":
+    set_random_seed(seed)
     with open(cnn_log_dir, 'w') as f:
         f.write('Model: CNN\n\n')
     main()
 
     # Load the model to predict a single image
-    # cnn_model.load_state_dict(torch.load('../data/cnn_model.pth'))
+    # cnn_model.load_state_dict(torch.load(cnn_model_dir))
     # image_path = '../data/test/1/3.jpg'
     # predicted_class = predict_single_image(cnn_model, image_path)
     # print("The predicted class for the image is: {}".format(predicted_class))
