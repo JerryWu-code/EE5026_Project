@@ -161,11 +161,12 @@ def draw_accuracy_curve(x, accu_mat: np.array, save_fig=False, file_name=None):
         fig.savefig(output_fig_dir + '{0}: Accuracy_Curve.png'.format(file_name))
 
 
-def plot_loss_history(loss_histories, labels, title='Training Loss History',
+def plot_loss_history(loss_histories, labels, window_size=5, title='Training Loss History',
                       xlabel='Iterations', ylabel='Loss', save_fig=False):
     """
-    Plot the training loss history for different models.
+    Plot the training loss history with moving average for different models.
 
+    :param window_size: Size of the moving average window.
     :param save_fig: whether save the figure or not.
     :param loss_histories: A list of loss histories (list of lists).
     :param labels: A list of labels for each loss history.
@@ -174,8 +175,11 @@ def plot_loss_history(loss_histories, labels, title='Training Loss History',
     :param ylabel: Label for the Y-axis.
     """
     fig = plt.figure(figsize=(12, 6))
+
     for loss_history, label in zip(loss_histories, labels):
-        plt.plot(loss_history, label=label)
+        # Calculate moving average
+        moving_avg = np.convolve(loss_history, np.ones(window_size) / window_size, mode='valid')
+        plt.plot(moving_avg, label=label)
 
     plt.title(title)
     plt.xlabel(xlabel)
@@ -183,13 +187,14 @@ def plot_loss_history(loss_histories, labels, title='Training Loss History',
     plt.legend(loc='best')
     plt.grid()
     plt.show()
+
     if save_fig:
         fig.savefig(output_fig_dir + '{0}.png'.format(title))
 
 
 if __name__ == "__main__":
     image_dir = train_dir
-    save = True
+    save = False
 
     train_image, new_labels, label_mapping = image_to_mat(image_dir=image_dir, target_num=train_target_num,
                                                           use_selfie=True)
@@ -205,4 +210,4 @@ if __name__ == "__main__":
     loss_history_model1 = read_loss_history_from_csv(cnn_loss_dir)
     loss_history_model2 = read_loss_history_from_csv(resnet18_loss_dir)
     plot_loss_history(loss_histories=[loss_history_model2, loss_history_model1],
-                      labels=['ResNet-18', 'CNN'], save_fig=save)
+                      labels=['ResNet-18', 'CNN'], window_size=1, title='Training Loss History', save_fig=save)
