@@ -58,7 +58,6 @@ if __name__ == '__main__':
                                                                write_result=save, file_name=PCA_train_dir)
 
     # 3. Draw and save the eigen faces and projection results of training set.
-    draw_PCs_faces(reduced_eigen_faces=train_reduced_eigen_faces_2d, save_fig=save)
     draw_PCs_faces(reduced_eigen_faces=train_reduced_eigen_faces_3d, save_fig=save)
     draw_ProjectedData(train_reduced_2d, train_reduced_3d, new_labels=train_new_labels,
                        selfie_label=selfie_label, save_fig=save, name='PCA')

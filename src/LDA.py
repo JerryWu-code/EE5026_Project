@@ -74,6 +74,7 @@ class LDA:
 if __name__ == "__main__":
     image_dir1 = train_dir
     image_dir2 = test_dir
+    save = True
 
     X_train, y_train, X_test, y_test = get_dataset(train_target_num)
 
@@ -84,6 +85,7 @@ if __name__ == "__main__":
     # example_indice = selfie_indices[case_selfie_num - 1]
 
     accuracy_list = []
+    proj_2d_3d = []
     # example_face = [train_image_mat[:, example_indice].reshape(32, 32)]
 
     for i in range(2):
@@ -92,6 +94,10 @@ if __name__ == "__main__":
             lda_model = LDA(k=d)
             lda_model.fit(X_train, y_train)
             X_train_lda = lda_model.transform(X_train)
+            if d == 2:
+                proj_2d_3d.append(X_train_lda.T)
+            elif d == 3:
+                proj_2d_3d.append(X_train_lda.T)
             X_test_lda = lda_model.transform(X_test)
 
             predicted_classes, accuracy = knn_classifier(X_train=X_train_lda[group, :], y_train=y_train[group],
@@ -101,5 +107,8 @@ if __name__ == "__main__":
             #     example_face.append(reconstruct_faces[:, example_indice].reshape(32, 32))
 
     accu = np.array(accuracy_list).reshape(2, -1)
-
-    draw_accuracy_curve(x=dimension_list, accu_mat=accu, save_fig=True, file_name='LDA & KNN')
+    # Draw projection space 2D & 3D
+    draw_ProjectedData(proj_2d_3d[0], proj_2d_3d[1], new_labels=y_train,
+                       selfie_label=selfie_label, save_fig=save, name='LDA')
+    # Draw the accuracy curve
+    # draw_accuracy_curve(x=dimension_list, accu_mat=accu, save_fig=False, file_name='LDA & KNN')
