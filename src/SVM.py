@@ -3,6 +3,7 @@ from data_loader import get_dataset
 import numpy as np
 from tqdm import tqdm
 
+
 def perform_grid_search(X_train, y_train, X_val, y_val, param_grid):
     """
     Perform grid search for hyperparameter tuning of SVM model.
@@ -38,6 +39,7 @@ def perform_grid_search(X_train, y_train, X_val, y_val, param_grid):
 
     return best_param, best_accuracy
 
+
 if __name__ == "__main__":
     # 1. Get data
     X_train, y_train, X_test, y_test = get_dataset(train_num=None)
@@ -49,7 +51,8 @@ if __name__ == "__main__":
     }
 
     # 3. Perform grid search
-    best_param, best_accuracy = perform_grid_search(X_train.tolist(), y_train.tolist(), X_test.tolist(), y_test.tolist(), param_grid)
+    best_param, best_accuracy = perform_grid_search(X_train.tolist(), y_train.tolist(), X_test.tolist(),
+                                                    y_test.tolist(), param_grid)
     print("Best parameters found:", best_param)
     print("Best accuracy found:", best_accuracy)
 
