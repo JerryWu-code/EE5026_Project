@@ -9,6 +9,9 @@ from PIL import Image
 from config import *
 from data_loader import *
 
+# Set the device to GPU, "mps" for macOS and "cuda" for Linux
+device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+print("Using {} device".format(device))
 
 # Define the ResNet model
 class ResNet(nn.Module):
@@ -65,6 +68,7 @@ def train_model(res_model, train_loader, criterion, optimizer, scheduler, num_ep
     for epoch in range(num_epochs):
         total_loss = 0
         for i, (images, labels) in enumerate(train_loader):
+            images, labels = images.to(device), labels.to(device)
             optimizer.zero_grad()
             outputs = res_model(images)
             loss = criterion(outputs, labels)
@@ -105,6 +109,7 @@ def get_predictions_and_accuracy(model, data_loader):
 
     with torch.no_grad():  # Gradient calculation is not required
         for images, labels in data_loader:
+            images, labels = images.to(device), labels.to(device)
             outputs = model(images)
             _, predicted = torch.max(outputs, 1)
             all_predictions.extend(predicted.tolist())
@@ -131,7 +136,7 @@ def preprocess_image(image_path):
 # Function to predict the class of a single image
 def predict_single_image(model, image_path):
     # Preprocess the image
-    input_image = preprocess_image(image_path)
+    input_image = preprocess_image(image_path).to(device)
 
     # Perform prediction
     model.eval()  # Set the model to evaluation mode
@@ -148,7 +153,7 @@ def predict_single_image(model, image_path):
 #####
 
 def main():
-    resnet_model = ResNet()
+    resnet_model = ResNet().to(device)
     criterion = nn.CrossEntropyLoss()
     if resnet18_norm_gradient:
         torch.nn.utils.clip_grad_norm_(resnet_model.parameters(), max_norm=1.0)
@@ -174,7 +179,6 @@ def main():
     with open(resnet18_log_dir, 'a') as f:
         f.write(log2)
     print(log2)
-
 
 if __name__ == "__main__":
     set_random_seed(seed)

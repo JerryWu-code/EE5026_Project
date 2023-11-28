@@ -8,6 +8,9 @@ from PIL import Image
 from config import *
 from data_loader import *
 
+# Set the device to GPU
+device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+print("Using {} device".format(device))
 
 # Define the CNN model
 class CNN(nn.Module):
@@ -68,6 +71,7 @@ def train_model(cnn_model, train_loader, criterion, optimizer, scheduler, num_ep
     for epoch in range(num_epochs):
         total_loss = 0
         for i, (images, labels) in enumerate(train_loader):
+            images, labels = images.to(device), labels.to(device)
             optimizer.zero_grad()
             outputs = cnn_model(images)
             loss = criterion(outputs, labels)
@@ -108,6 +112,7 @@ def get_predictions_and_accuracy(model, data_loader):
 
     with torch.no_grad():  # Gradient calculation is not required
         for images, labels in data_loader:
+            images, labels = images.to(device), labels.to(device)
             outputs = model(images)
             _, predicted = torch.max(outputs, 1)
             all_predictions.extend(predicted.tolist())
@@ -134,7 +139,7 @@ def preprocess_image(image_path):
 # Function to predict the class of a single image
 def predict_single_image(model, image_path):
     # Preprocess the image
-    input_image = preprocess_image(image_path)
+    input_image = preprocess_image(image_path).to(device)
 
     # Perform prediction
     model.eval()  # Set the model to evaluation mode
@@ -150,7 +155,7 @@ def predict_single_image(model, image_path):
 
 # Main function to orchestrate the training and testing
 def main():
-    cnn_model = CNN()
+    cnn_model = CNN().to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(cnn_model.parameters(), lr=learning_rate)
     scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=gamma)
